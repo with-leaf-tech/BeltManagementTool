@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,121 +18,65 @@ using System.Windows.Forms;
 namespace BeltManagementTool {
     public partial class Form1 : Form {
 
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         System.Drawing.Bitmap captureImage = null;
         GoogleVisionApiOCR ocr = null;
+
+        string settingFileName = "setting.txt";
+        string replaceWordFileName = "replaceWord.txt";
+
+        Dictionary<string, string> replaceWordDic = new Dictionary<string, string>();
 
         public Form1() {
             InitializeComponent();
 
+            if(File.Exists(settingFileName)) {
+                string[] settingValue = File.ReadAllText(settingFileName).Split(new char[] { ',' });
+                numericUpDown1.Value = int.Parse(settingValue[0]);
+                numericUpDown2.Value = int.Parse(settingValue[1]);
+                numericUpDown3.Value = int.Parse(settingValue[2]);
+                numericUpDown4.Value = int.Parse(settingValue[3]);
+            }
+
+            if(File.Exists(replaceWordFileName)) {
+                string[] replaceWords = File.ReadAllLines(replaceWordFileName);
+                for(int i = 0; i < replaceWords.Length; i++) {
+                    string[] words = replaceWords[i].Split(new string[] { "!_!" }, StringSplitOptions.RemoveEmptyEntries);
+                    replaceWordDic[words[0]] = words[1];
+                }
+            }
+
             ocr = new GoogleVisionApiOCR(@"C:\Users\tsutsumi\Downloads\try-apis-8b2095f28b0e.json");
         }
 
+        private void outputReplaceWords() {
+            StringBuilder sb = new StringBuilder();
+            foreach(string key in replaceWordDic.Keys) {
+                sb.Append(key);
+                sb.Append("!_!");
+                sb.Append(replaceWordDic[key]);
+                sb.Append(Environment.NewLine);
+            }
+
+            File.WriteAllText(replaceWordFileName, sb.ToString());
+        }
 
         private BeltEntity GetOCRTest() {
-            string text = ocr.GetTextFromImage(captureImage);
+            string text = ocr.GetTextFromImage(captureImage).Replace("\n", "\r\n");
+            foreach(string key in replaceWordDic.Keys) {
+                text = text.Replace(key, replaceWordDic[key]);
+            }
+            logTextBox.Text = text;
+
+            logger.Info("読み取り結果：" + Environment.NewLine + logTextBox.Text);
+
             return new BeltEntity(text);
         }
 
         private void button1_Click(object sender, EventArgs e) {
+            screenCapture();
             BeltEntity entity = GetOCRTest();
-            /*
-            var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile(@"C:\Users\tsutsumi\Downloads\try-apis-8b2095f28b0e.json");
-            credential = credential.CreateScoped(new[] { VisionService.Scope.CloudPlatform });
-
-
-            var visionService = new VisionService(new BaseClientService.Initializer {
-                HttpClientInitializer = credential,
-                GZipEnabled = false
-            });
-            */
-            /*
-            //ファイルを開く
-            System.IO.FileStream fs = new System.IO.FileStream(
-                @"C:\Users\tsutsumi\Downloads\e89239da.jpg",
-                System.IO.FileMode.Open,
-                System.IO.FileAccess.Read);
-            //ファイルを読み込むバイト型配列を作成する
-            byte[] bs = new byte[fs.Length];
-            //ファイルの内容をすべて読み込む
-            fs.Read(bs, 0, bs.Length);
-            //閉じる
-            fs.Close();
-            */
-
-            /*
-            // スクリーンショット
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(300, 400); // 取り込むサイズ
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            //画面全体をコピーする
-            g.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), bmp.Size);
-            byte[] bs = ImageToByte(bmp);
-            //解放
-            g.Dispose();
-            */
-            /*
-            byte[] bs = ImageToByte(captureImage);
-            string text = "";
-            int result = DetectTextWord(visionService, bs, ref text);
-            */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            /*
-            //Bitmapの作成
-            Bitmap bmp = new Bitmap(30, 40); // 取り込むサイズ
-            Point leftTopPoint = new Point(1200, 0); // 画面上の左上の位置
-
-            // デバッグ用画像
-            bmp = (Bitmap)System.Drawing.Image.FromFile(@"C:\Users\tsutsumi\Downloads\e89239da.jpg");
-
-            //OcrClassLibrary.OcrClassLibrary lib = new OcrClassLibrary.OcrClassLibrary();
-            //string text = lib.OcrFromImage(@"C:\Users\tsutsumi\Downloads\e89239da.jpg", "en-US");
-            */
-            /*
-            // スクリーンショット
-            //Graphicsの作成
-            Graphics g = Graphics.FromImage(bmp);
-            //画面全体をコピーする
-            g.CopyFromScreen(leftTopPoint, new Point(0, 0), bmp.Size);
-            //解放
-            g.Dispose();
-            */
-            /*
-            //表示
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.Image = bmp;
-
-
-            // OCRを行うオブジェクトの生成
-            //  言語データの場所と言語名を引数で指定する
-            var tesseract = new Tesseract.TesseractEngine(
-                @"C:\Program Files\Tesseract-OCR\tessdata", // 言語ファイルを「C:\tessdata」に置いた場合
-                "jpn");         // 英語なら"eng" 「○○.traineddata」の○○の部分
-
-            // 画像ファイルの読み込み
-            var img = new System.Drawing.Bitmap(@"C:\Users\tsutsumi\Downloads\e89239da.jpg");
-            // OCRの実行と表示
-            var page = tesseract.Process(img);
-            System.Console.Write(page.GetText());
-            */
-
-
         }
 
 
@@ -143,20 +88,24 @@ namespace BeltManagementTool {
             if(numericUpDown1.Value != 0) {
                 numericUpDown1.Value -= 1;
             }
+            outputSetting();
         }
 
         private void button4_Click(object sender, EventArgs e) {
             numericUpDown1.Value += 1;
+            outputSetting();
         }
 
         private void button3_Click(object sender, EventArgs e) {
             if (numericUpDown2.Value != 0) {
                 numericUpDown2.Value -= 1;
             }
+            outputSetting();
         }
 
         private void button5_Click(object sender, EventArgs e) {
             numericUpDown2.Value += 1;
+            outputSetting();
         }
 
         private void screenCapture() {
@@ -181,6 +130,11 @@ namespace BeltManagementTool {
 
         private void numericUpDown_ValueChanged(object sender, EventArgs e) {
             screenCapture();
+            outputSetting();
+        }
+
+        private void outputSetting() {
+            File.WriteAllText(settingFileName, numericUpDown1.Value + "," + numericUpDown2.Value + "," + numericUpDown3.Value + "," + numericUpDown4.Value);
         }
 
         private void button6_Click(object sender, EventArgs e) {
@@ -194,7 +148,7 @@ namespace BeltManagementTool {
         private void timer1_Tick(object sender, EventArgs e) {
             timer1.Enabled = false;
             screenCapture();
-            //BeltEntity entity = GetOCRTest();
+            BeltEntity entity = GetOCRTest();
             timer1.Enabled = true;
         }
 
@@ -203,6 +157,32 @@ namespace BeltManagementTool {
             button1.Enabled = true;
             button6.Enabled = true;
             button7.Enabled = false;
+        }
+
+        private void button8_Click(object sender, EventArgs e) {
+            captureImage = (Bitmap)System.Drawing.Image.FromFile(@"C:\Test\sample1.bmp");
+            BeltEntity entity = GetOCRTest();
+        }
+
+        private void button10_Click(object sender, EventArgs e) {
+            string str = Microsoft.VisualBasic.Interaction.InputBox("入力してください", "ユーザー登録", default, 300, 400);
+            if(str.Length > 0) {
+                listBox1.Items.Add(str);
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e) {
+            if(listBox1.SelectedIndex != -1) {
+                if(MessageBox.Show("削除していいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+                }
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e) {
+            logTextBox.Text = logTextBox.Text.Replace(textBox1.Text, textBox2.Text);
+            replaceWordDic[textBox1.Text] = textBox2.Text;
+            outputReplaceWords();
         }
     }
 }
