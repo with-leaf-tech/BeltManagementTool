@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeltManagementTool", "BeltManagementTool\BeltManagementTool.csproj", "{F38E99FC-FC72-497E-A3DB-98FC078F80B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcrClassLibrary", "OcrClassLibrary\OcrClassLibrary.csproj", "{861863C2-62C5-4238-966D-659F9842616C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAppGoogle", "TestAppGoogle\TestAppGoogle.csproj", "{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Debug|x64.ActiveCfg = Debug|x64
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Debug|x64.Build.0 = Debug|x64
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Release|x64.ActiveCfg = Release|x64
+		{F38E99FC-FC72-497E-A3DB-98FC078F80B3}.Release|x64.Build.0 = Release|x64
+		{861863C2-62C5-4238-966D-659F9842616C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{861863C2-62C5-4238-966D-659F9842616C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{861863C2-62C5-4238-966D-659F9842616C}.Debug|x64.ActiveCfg = Debug|x64
+		{861863C2-62C5-4238-966D-659F9842616C}.Debug|x64.Build.0 = Debug|x64
+		{861863C2-62C5-4238-966D-659F9842616C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{861863C2-62C5-4238-966D-659F9842616C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{861863C2-62C5-4238-966D-659F9842616C}.Release|x64.ActiveCfg = Release|x64
+		{861863C2-62C5-4238-966D-659F9842616C}.Release|x64.Build.0 = Release|x64
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Debug|x64.ActiveCfg = Debug|x64
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Debug|x64.Build.0 = Debug|x64
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Release|x64.ActiveCfg = Release|x64
+		{7436ACFC-B783-4FBC-A7D3-57B584E2FD66}.Release|x64.Build.0 = Release|x64
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Debug|x64.Build.0 = Debug|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Release|x64.ActiveCfg = Release|Any CPU
+		{6FAFA4E6-DA39-48F9-9BE8-5F3E144BCA72}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1127E5BD-EFD9-42BF-B565-5AC8AA821EC5}
+	EndGlobalSection
+EndGlobal
