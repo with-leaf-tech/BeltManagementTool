@@ -36,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.logTextBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -51,6 +51,8 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.logTextBox2 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -208,14 +210,14 @@
             0});
             this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown_ValueChanged);
             // 
-            // logTextBox
+            // logTextBox1
             // 
-            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.logTextBox.Location = new System.Drawing.Point(0, 235);
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(800, 215);
-            this.logTextBox.TabIndex = 12;
+            this.logTextBox1.Location = new System.Drawing.Point(0, 235);
+            this.logTextBox1.Multiline = true;
+            this.logTextBox1.Name = "logTextBox1";
+            this.logTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox1.Size = new System.Drawing.Size(395, 215);
+            this.logTextBox1.TabIndex = 12;
             // 
             // groupBox1
             // 
@@ -326,6 +328,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(120, 100);
             this.listBox1.TabIndex = 18;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button10
             // 
@@ -355,12 +358,33 @@
             this.button12.TabIndex = 21;
             this.button12.Text = "登録";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // logTextBox2
+            // 
+            this.logTextBox2.Location = new System.Drawing.Point(431, 235);
+            this.logTextBox2.Multiline = true;
+            this.logTextBox2.Name = "logTextBox2";
+            this.logTextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox2.Size = new System.Drawing.Size(370, 215);
+            this.logTextBox2.TabIndex = 22;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(402, 331);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 12);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "→";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.logTextBox2);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
@@ -370,7 +394,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.logTextBox);
+            this.Controls.Add(this.logTextBox1);
             this.Controls.Add(this.numericUpDown4);
             this.Controls.Add(this.numericUpDown3);
             this.Controls.Add(this.label2);
@@ -413,7 +437,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.TextBox logTextBox;
+        private System.Windows.Forms.TextBox logTextBox1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDown5;
@@ -428,6 +452,8 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.TextBox logTextBox2;
+        private System.Windows.Forms.Label label4;
     }
 }
 
