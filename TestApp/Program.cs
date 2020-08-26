@@ -14,7 +14,7 @@ namespace TestApp {
             //  言語データの場所と言語名を引数で指定する
             var tesseract = new TesseractEngine(
                 @"C:\Program Files\Tesseract-OCR\tessdata", // 言語ファイルを「C:\tessdata」に置いた場合
-                "dq");         // 英語なら"eng" 「○○.traineddata」の○○の部分
+                "jpn");         // 英語なら"eng" 「○○.traineddata」の○○の部分
 
             // 画像ファイルの読み込み
             var img = new System.Drawing.Bitmap(@"C:\Tools\test.png");

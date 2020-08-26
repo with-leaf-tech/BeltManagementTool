@@ -114,6 +114,8 @@
     </Compile>
     <Compile Include="OCR\GoogleVisionApiOCR.cs" />
     <Compile Include="OCR\OcrBase.cs" />
+    <Compile Include="OCR\TesseractOCR.cs" />
+    <Compile Include="OCR\WindowsOCR.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

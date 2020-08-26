@@ -69,6 +69,14 @@ namespace OcrClassLibrary {
             return sb.ToString();
         }
 
+        public string OcrFromBitmap(Bitmap bitmap, string baseLang) {
+            StringBuilder sb = new StringBuilder();
+            var result = Recognize(bitmap, baseLang);
+            foreach (var l in result.Lines) {
+                sb.Append(l.Text);
+            }
+            return sb.ToString();
+        }
 
 
     }

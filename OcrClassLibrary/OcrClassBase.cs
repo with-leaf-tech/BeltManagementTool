@@ -33,6 +33,7 @@ namespace OcrClassLibrary {
             var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
             return ocrResult;
         }
+
         private async Task<OcrResult> OcrMain(string baseLang) {
             SoftwareBitmap bitmap = null;
             BitmapSource image = System.Windows.Clipboard.GetImage();

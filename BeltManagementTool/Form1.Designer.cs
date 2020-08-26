@@ -53,6 +53,10 @@
             this.button12 = new System.Windows.Forms.Button();
             this.logTextBox2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ocrRadioGoogle = new System.Windows.Forms.RadioButton();
+            this.ocrRadioWindows = new System.Windows.Forms.RadioButton();
+            this.ocrRadioTesseract = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -60,6 +64,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -378,11 +383,59 @@
             this.label4.TabIndex = 23;
             this.label4.Text = "→";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.ocrRadioTesseract);
+            this.groupBox2.Controls.Add(this.ocrRadioWindows);
+            this.groupBox2.Controls.Add(this.ocrRadioGoogle);
+            this.groupBox2.Location = new System.Drawing.Point(5, 101);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(73, 115);
+            this.groupBox2.TabIndex = 24;
+            this.groupBox2.TabStop = false;
+            // 
+            // ocrRadioGoogle
+            // 
+            this.ocrRadioGoogle.AutoSize = true;
+            this.ocrRadioGoogle.Location = new System.Drawing.Point(3, 19);
+            this.ocrRadioGoogle.Name = "ocrRadioGoogle";
+            this.ocrRadioGoogle.Size = new System.Drawing.Size(58, 16);
+            this.ocrRadioGoogle.TabIndex = 0;
+            this.ocrRadioGoogle.TabStop = true;
+            this.ocrRadioGoogle.Text = "Google";
+            this.ocrRadioGoogle.UseVisualStyleBackColor = true;
+            this.ocrRadioGoogle.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
+            // ocrRadioWindows
+            // 
+            this.ocrRadioWindows.AutoSize = true;
+            this.ocrRadioWindows.Location = new System.Drawing.Point(3, 42);
+            this.ocrRadioWindows.Name = "ocrRadioWindows";
+            this.ocrRadioWindows.Size = new System.Drawing.Size(67, 16);
+            this.ocrRadioWindows.TabIndex = 1;
+            this.ocrRadioWindows.TabStop = true;
+            this.ocrRadioWindows.Text = "Windows";
+            this.ocrRadioWindows.UseVisualStyleBackColor = true;
+            this.ocrRadioWindows.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
+            // ocrRadioTesseract
+            // 
+            this.ocrRadioTesseract.AutoSize = true;
+            this.ocrRadioTesseract.Location = new System.Drawing.Point(3, 66);
+            this.ocrRadioTesseract.Name = "ocrRadioTesseract";
+            this.ocrRadioTesseract.Size = new System.Drawing.Size(74, 16);
+            this.ocrRadioTesseract.TabIndex = 2;
+            this.ocrRadioTesseract.TabStop = true;
+            this.ocrRadioTesseract.Text = "Tesseract";
+            this.ocrRadioTesseract.UseVisualStyleBackColor = true;
+            this.ocrRadioTesseract.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.logTextBox2);
             this.Controls.Add(this.button12);
@@ -418,6 +471,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -454,6 +509,10 @@
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.TextBox logTextBox2;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton ocrRadioTesseract;
+        private System.Windows.Forms.RadioButton ocrRadioWindows;
+        private System.Windows.Forms.RadioButton ocrRadioGoogle;
     }
 }
 

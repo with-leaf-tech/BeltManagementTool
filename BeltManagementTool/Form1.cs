@@ -20,8 +20,11 @@ namespace BeltManagementTool {
 
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        System.Drawing.Bitmap captureImage = null;
-        GoogleVisionApiOCR ocr = null;
+        Bitmap captureImage = null;
+        GoogleVisionApiOCR googleOcr = null;
+        WindowsOCR windowsOcr = null;
+        TesseractOCR tesseractOcr = null;
+        OcrBase ocr = null;
 
         string settingFileName = "setting.txt";
         string replaceWordFileName = "replaceWord.txt";
@@ -55,7 +58,18 @@ namespace BeltManagementTool {
             }
             loadUserData();
 
-            ocr = new GoogleVisionApiOCR(@"C:\Users\tsutsumi\Downloads\try-apis-8b2095f28b0e.json");
+            initialize();
+        }
+
+        private async void initialize() {
+            googleOcr = new GoogleVisionApiOCR();
+            googleOcr.initialize(@"C:\Users\tsutsumi\Downloads\try-apis-8b2095f28b0e.json");
+            windowsOcr = new WindowsOCR();
+
+            await Task.Run(() => windowsOcr.initialize(""));
+            tesseractOcr = new TesseractOCR();
+            tesseractOcr.initialize("");
+            ocrRadioWindows.Checked = true;
         }
 
         private void outputReplaceWords() {
@@ -71,23 +85,38 @@ namespace BeltManagementTool {
         }
 
         private BeltEntity GetOCRTest() {
-            string text = ocr.GetTextFromImage(captureImage).Replace("\n", "\r\n");
-            logTextBox1.Text = text;
-            foreach (string key in replaceWordDic.Keys) {
-                text = text.Replace(key, replaceWordDic[key]);
+            string text = ocr.GetTextFromImage(captureImage, "ja-JP").Replace("\n", "\r\n");
+            if(InvokeRequired) {
+                Invoke((MethodInvoker)delegate {
+                    logTextBox1.Text = text;
+                    foreach (string key in replaceWordDic.Keys) {
+                        text = text.Replace(key, replaceWordDic[key]);
+                    }
+                    logTextBox2.Text = text;
+
+                    logger.Info("読み取り結果：" + Environment.NewLine + logTextBox1.Text);
+                });
             }
-            logTextBox2.Text = text;
+            else {
+                logTextBox1.Text = text;
+                foreach (string key in replaceWordDic.Keys) {
+                    text = text.Replace(key, replaceWordDic[key]);
+                }
+                logTextBox2.Text = text;
 
-            analyze(text);
-
-            logger.Info("読み取り結果：" + Environment.NewLine + logTextBox1.Text);
-
+                logger.Info("読み取り結果：" + Environment.NewLine + logTextBox1.Text);
+            }
             return new BeltEntity(text);
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private async void button1_Click(object sender, EventArgs e) {
             screenCapture();
-            BeltEntity entity = GetOCRTest();
+            if(ocrRadioWindows.Checked) {
+                await Task.Run(() => GetOCRTest());
+            }
+            else {
+                BeltEntity entity = GetOCRTest();
+            }
         }
 
 
@@ -477,12 +506,26 @@ namespace BeltManagementTool {
         }
 
         private void button12_Click(object sender, EventArgs e) {
+            analyze(logTextBox2.Text);
+
             entryWindow.setItems(name, equip, listBox1.SelectedItem.ToString(), detailList);
             entryWindow.ShowDialog();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) {
             saveUserData();
+        }
+
+        private void ocrRadio_CheckedChanged(object sender, EventArgs e) {
+            if(ocrRadioGoogle.Checked) {
+                ocr = googleOcr;
+            }
+            else if(ocrRadioTesseract.Checked) {
+                ocr = tesseractOcr;
+            }
+            else {
+                ocr = windowsOcr;
+            }
         }
     }
 }
