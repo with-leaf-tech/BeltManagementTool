@@ -20,7 +20,7 @@ namespace BeltManagementTool {
 
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        Bitmap captureImage = null;
+        //Bitmap captureImage = null;
         GoogleVisionApiOCR googleOcr = null;
         WindowsOCR windowsOcr = null;
         TesseractOCR tesseractOcr = null;
@@ -29,8 +29,15 @@ namespace BeltManagementTool {
         string settingFileName = "setting.txt";
         string replaceWordFileName = "replaceWord.txt";
         string userFileName = "user.txt";
+        string imageFileName = "image.png";
+
+        private string _itemDataFile = "_item.txt";
+        private string _equipDataFile = "_equip.txt";
+        
+        string[] equips = new string[] { "鎌", "両手杖", "アタマ", "からだ上", "からだ下", "ウデ", "足", "顔", "首", "指", "胸", "腰", "札", "その他", "紋章", "証" };
 
         Dictionary<string, string> replaceWordDic = new Dictionary<string, string>();
+        List<string[]> settingData = new List<string[]>();
 
         string name = "";
         string equip = "";
@@ -41,14 +48,6 @@ namespace BeltManagementTool {
         public Form1() {
             InitializeComponent();
 
-            if(File.Exists(settingFileName)) {
-                string[] settingValue = File.ReadAllText(settingFileName).Split(new char[] { ',' });
-                numericUpDown1.Value = int.Parse(settingValue[0]);
-                numericUpDown2.Value = int.Parse(settingValue[1]);
-                numericUpDown3.Value = int.Parse(settingValue[2]);
-                numericUpDown4.Value = int.Parse(settingValue[3]);
-            }
-
             if(File.Exists(replaceWordFileName)) {
                 string[] replaceWords = File.ReadAllLines(replaceWordFileName);
                 for(int i = 0; i < replaceWords.Length; i++) {
@@ -57,6 +56,10 @@ namespace BeltManagementTool {
                 }
             }
             loadUserData();
+            loadPositionData();
+
+            selectEquip.Checked = true;
+            selectUser.Checked = true;
 
             initialize();
         }
@@ -85,7 +88,9 @@ namespace BeltManagementTool {
         }
 
         private BeltEntity GetOCRTest() {
-            string text = ocr.GetTextFromImage(captureImage, "ja-JP").Replace("\n", "\r\n");
+            Bitmap img = new Bitmap(imageFileName);
+            string text = ocr.GetTextFromImage(img, "ja-JP").Replace("\n", "\r\n");
+            img.Dispose();
             if(InvokeRequired) {
                 Invoke((MethodInvoker)delegate {
                     logTextBox1.Text = text;
@@ -128,37 +133,39 @@ namespace BeltManagementTool {
             if(numericUpDown1.Value != 0) {
                 numericUpDown1.Value -= 1;
             }
-            outputSetting();
+            savePositionData();
         }
 
         private void button4_Click(object sender, EventArgs e) {
             numericUpDown1.Value += 1;
-            outputSetting();
+            savePositionData();
         }
 
         private void button3_Click(object sender, EventArgs e) {
             if (numericUpDown2.Value != 0) {
                 numericUpDown2.Value -= 1;
             }
-            outputSetting();
+            savePositionData();
         }
 
         private void button5_Click(object sender, EventArgs e) {
             numericUpDown2.Value += 1;
-            outputSetting();
+            savePositionData();
         }
 
         private void screenCapture() {
             this.SendToBack();
 
             // スクリーンショット
-            captureImage = new System.Drawing.Bitmap((int)numericUpDown3.Value, (int)numericUpDown4.Value);
+            Bitmap captureImage = new System.Drawing.Bitmap((int)numericUpDown3.Value, (int)numericUpDown4.Value);
             //Graphicsの作成
             Graphics g = Graphics.FromImage(captureImage);
             //画面全体をコピーする
             g.CopyFromScreen(new Point((int)numericUpDown1.Value, (int)numericUpDown2.Value), new Point(0, 0), captureImage.Size);
             //解放
             g.Dispose();
+
+            captureImage.Save(imageFileName);
 
             //表示
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -170,12 +177,12 @@ namespace BeltManagementTool {
 
         private void numericUpDown_ValueChanged(object sender, EventArgs e) {
             screenCapture();
-            outputSetting();
+            savePositionData();
         }
 
-        private void outputSetting() {
-            File.WriteAllText(settingFileName, numericUpDown1.Value + "," + numericUpDown2.Value + "," + numericUpDown3.Value + "," + numericUpDown4.Value);
-        }
+        //private void outputSetting() {
+        //    File.WriteAllText(settingFileName, numericUpDown1.Value + "," + numericUpDown2.Value + "," + numericUpDown3.Value + "," + numericUpDown4.Value);
+        //}
 
         private void button6_Click(object sender, EventArgs e) {
             timer1.Interval = (int)numericUpDown5.Value * 1000;
@@ -223,6 +230,7 @@ namespace BeltManagementTool {
                 text.Contains("9こ") ||
                 text.Contains("0こ")
                 ) {
+                equip = "アイテム";
                 text = text
                     .Replace("1に", "1こ")
                     .Replace("2に", "2こ")
@@ -273,8 +281,7 @@ namespace BeltManagementTool {
                 }
             }
             else {
-                string[] namehead = new string[] { "EO", "ED", "EE", "の", "N回", "E回", "回", "图", "NO", "NG", "NE", "v3", "①", "②", "D", "E", "S", "N", "O", "@", "3" };
-                string[] equips = new string[] { "鎌", "アタマ", "からだ上", "からだ下", "ウデ", "足", "顔", "首", "指", "胸", "腰", "札", "その他", "紋章", "証" };
+                string[] namehead = new string[] { "EO", "ED", "EE", "の", "N回", "E回", "回", "囚", "图", "NO", "NG", "NE", "v3", "①", "②", "D", "E", "S", "N", "O", "@", "3", "2" };
                 string[] parts = text.Replace(" ", "").Replace("\r\n", "\n").Split(new char[] { '\n' });
                 List<string> remainList = new List<string>();
                 bool remainStart = false;
@@ -423,28 +430,32 @@ namespace BeltManagementTool {
 
         private void button8_Click(object sender, EventArgs e) {
             string text = @"
-せかいじゅの葉
-せかいじゅの葉
-せかいじゅのしずく
-まほうのせいすい
-まほうのせいすい
-まほうのせいすい
-まほうのせいすい
-まほうのせいすい
-まほうのせいすい
-まほうのせいすい
-99こ
-33こ
-4こ
-99こ
-99こ
-99こ
-99こ
-99こ
-99こ
-75こ
+2神域の杖+3
+両手杖レア度 B
+死んでも早詠みの 使い込み。店売り不可
+効果が残りうる
+行動しやすい杖
+Lv 99以上装備可
+追加効果
+錬金石D赤の練金石
+基礎効果:死亡時 50.0%で早詠みの杖が消えない
+基礎効果:2.0%でタ-ン消費なし(試合無効)
+錬金効果:呪文ぼうそう率 +1.4(-0.9)%
+錬金効果:攻撃時 4%でマヒ
+錬金効果:攻撃時 4%でルカニ
+できのよさ: 攻撃魔力 +6
+戦士 僧侶 魔使 武闘 盗賊 旅芸 バト パラ 魔戦 レン 買賢者 スパ
+まも どう 踊り 占い 天地 遊び デス
+0錬金強化を見る
+O装備できる仲間モンスターを見る
 ";
 
+            logTextBox1.Text = text;
+            foreach (string key in replaceWordDic.Keys) {
+                text = text.Replace(key, replaceWordDic[key]);
+            }
+            logTextBox2.Text = text;
+            
             analyze(text);
 
             int a = 0;
@@ -499,6 +510,58 @@ namespace BeltManagementTool {
             File.WriteAllText(userFileName, sb.ToString());
         }
 
+        private void loadPositionData() {
+            int settingCount = 3;
+            if (File.Exists(settingFileName)) {
+                int index = -1;
+                settingData.Clear();
+                string[] setting = File.ReadAllLines(settingFileName);
+                for (int i = 0; i < setting.Length; i++) {
+                    string[] settingParts = setting[i].Split(new char[] { ',' });
+                    settingData.Add(settingParts);
+                    if (settingParts[4] == "+") {
+                        index = i;
+                    }
+                }
+                if (setting.Length < settingCount) {
+                    for (int i = 0; i < settingCount - setting.Length; i++) {
+                        settingData.Add(new string[] { "0", "0", "1", "1", "" });
+                    }
+                }
+                if (index != -1) {
+                    Control[] radioList = this.Controls.Find("positionSetting" + index, true);
+                    ((System.Windows.Forms.RadioButton)radioList[0]).Checked = true;
+                }
+            }
+            else {
+                settingData.Add(new string[] { "0", "0", "1", "1", "+" });
+                for (int i = 0; i < settingCount - 1; i++) {
+                    settingData.Add(new string[] { "0", "0", "1", "1", "" });
+                }
+                positionSetting0.Checked = true;
+            }
+        }
+
+        private void savePositionData() {
+            int index = - 1;
+            if(positionSetting0.Checked) {
+                index = 0;
+            }
+            else if(positionSetting1.Checked) {
+                index = 1;
+            }
+            else {
+                index = 2;
+            }
+            settingData[index] = new string[] { numericUpDown1.Value.ToString(), numericUpDown2.Value.ToString(), numericUpDown3.Value.ToString(), numericUpDown4.Value.ToString(), "+" };
+
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < settingData.Count; i++) {
+                sb.Append(string.Join(",", settingData[i]) + Environment.NewLine);
+            }
+            File.WriteAllText(settingFileName, sb.ToString());
+        }
+
         private void button9_Click(object sender, EventArgs e) {
             logTextBox2.Text = logTextBox1.Text.Replace(textBox1.Text, textBox2.Text);
             replaceWordDic[textBox1.Text] = textBox2.Text;
@@ -526,6 +589,193 @@ namespace BeltManagementTool {
             else {
                 ocr = windowsOcr;
             }
+        }
+
+        private void positionSetting_CheckedChanged(object sender, EventArgs e) {
+            numericUpDown1.ValueChanged -= numericUpDown_ValueChanged;
+            numericUpDown2.ValueChanged -= numericUpDown_ValueChanged;
+            numericUpDown3.ValueChanged -= numericUpDown_ValueChanged;
+            int index = int.Parse(((System.Windows.Forms.RadioButton)sender).Text.Replace("設定", "")) -1;
+            for (int i = 0; i < settingData.Count; i++) {
+                if (i == index) {
+                    settingData[i][4] = "+";
+                    numericUpDown1.Value = int.Parse(settingData[i][0]);
+                    numericUpDown2.Value = int.Parse(settingData[i][1]);
+                    numericUpDown3.Value = int.Parse(settingData[i][2]);
+                    numericUpDown4.Value = int.Parse(settingData[i][3]);
+                }
+                else {
+                    settingData[i][4] = "";
+                }
+            }
+            numericUpDown1.ValueChanged += numericUpDown_ValueChanged;
+            numericUpDown2.ValueChanged += numericUpDown_ValueChanged;
+            numericUpDown3.ValueChanged += numericUpDown_ValueChanged;
+        }
+
+
+        private void searchRadioChange(object sender, EventArgs e) {
+            if(selectEquip.Checked) {
+                equipList.Items.Clear();
+                equipList.Items.AddRange(equips);
+            }
+            else {
+                List<string> itemList = new List<string>();
+                if (allUser.Checked) {
+                    for (int i = 0; i < listBox1.Items.Count; i++) {
+                        if (File.Exists(listBox1.Items[i] + _itemDataFile)) {
+                            string[] data = File.ReadAllLines(listBox1.Items[i] + _itemDataFile);
+                            itemList.AddRange(data.Select(x => x.Split(new char[] { ',' })[0]).ToList());
+                        }
+                    }
+                }
+                else {
+                    if (File.Exists(listBox1.SelectedItem + _itemDataFile)) {
+                        string[] data = File.ReadAllLines(listBox1.SelectedItem + _itemDataFile);
+                        itemList.AddRange(data.Select(x => x.Split(new char[] { ',' })[0]).ToList());
+                    }
+                }
+                equipList.Items.Clear();
+                equipList.Items.AddRange(itemList.Distinct().ToArray());
+            }
+        }
+
+        private void equipList_SelectedIndexChanged(object sender, EventArgs e) {
+            string selectEquipItem = equipList.SelectedItem.ToString();
+            resultList.Items.Clear();
+            abilityList.Items.Clear();
+            List<string> users = new List<string>();
+            if (allUser.Checked) {
+                for (int i = 0; i < listBox1.Items.Count; i++) {
+                    users.Add(listBox1.Items[i].ToString());
+                }
+            }
+            else {
+                users.Add(listBox1.SelectedItem.ToString());
+            }
+
+            if (selectEquip.Checked) {
+                List<string> ability = new List<string>();
+
+                for(int i = 0; i < users.Count; i++) {
+                    if (File.Exists(users[i] + _equipDataFile)) {
+                        string[] data = File.ReadAllLines(users[i] + _equipDataFile);
+                        List<string[]> aa = data.Where(x => (x.Split(new char[] { '\t' })[1]) == selectEquipItem).Select(x => (x.Split(new char[] { '\t' })[2]).Split(new char[] { ' ' })).ToList();
+                        List<string[]> bb = aa.Select(x => x.Where(y =>
+                        y.Contains("錬金:") ||
+                        y.Contains("合成:") ||
+                        y.Contains("伝承:") ||
+                        y.Contains("輝石:") ||
+                        y.Contains("秘石:") ||
+                        y.Contains("戦神:") ||
+                        y.Contains("鬼石:"))
+                        .Select(y => y
+                        .Replace("0", "")
+                        .Replace("1", "")
+                        .Replace("2", "")
+                        .Replace("3", "")
+                        .Replace("4", "")
+                        .Replace("5", "")
+                        .Replace("6", "")
+                        .Replace("7", "")
+                        .Replace("8", "")
+                        .Replace("9", "")
+                        .Replace("(", "")
+                        .Replace(")", "")
+                        .Replace("+", "")
+                        .Replace("-", "")
+                        .Replace(".", "")
+                        .Replace("%", "")
+                        ).ToArray()).ToList();
+
+                        bb.ForEach(x => ability.AddRange(x));
+                        abilityList.Items.AddRange(ability.Distinct().ToArray());
+                    }
+                }
+
+            }
+            else {
+                Dictionary<string, int> allCount = new Dictionary<string, int>();
+                for (int i = 0; i < users.Count; i++) {
+                    if (File.Exists(users[i] + _itemDataFile)) {
+                        string[] data = File.ReadAllLines(users[i] + _itemDataFile);
+                        List<string[]> aa = data.Where(x => (x.Split(new char[] { ',' })[0]) == selectEquipItem).Select(x => x.Split(new char[] { ',' })).ToList();
+                        var bb = aa.GroupBy(x => x[0]).Select(x => new { Name = x.Key, Sum = x.Sum(y => int.Parse(y[1])) }).ToList();
+                        foreach(var result in bb) {
+                            resultList.Items.Add(users[i] + " " + result.Name + " " + result.Sum + "こ");
+                            if(!allCount.ContainsKey(result.Name)) {
+                                allCount.Add(result.Name, 0);
+                            }
+                            allCount[result.Name] += result.Sum;
+                        }
+                    }
+                }
+                foreach(string name in allCount.Keys) {
+                    resultList.Items.Add("　合計" + " " + name + " " + allCount[name] + "こ");
+                }
+
+            }
+        }
+
+        private void abilityList_SelectedIndexChanged(object sender, EventArgs e) {
+            string selectEquipItem = equipList.SelectedItem.ToString();
+            resultList.Items.Clear();
+            List<string> users = new List<string>();
+            if (allUser.Checked) {
+                for (int i = 0; i < listBox1.Items.Count; i++) {
+                    users.Add(listBox1.Items[i].ToString());
+                }
+            }
+            else {
+                users.Add(listBox1.SelectedItem.ToString());
+            }
+
+            if (selectEquip.Checked) {
+                string selectAbilityItem = abilityList.SelectedItem.ToString();
+
+                for (int i = 0; i < users.Count; i++) {
+                    if (File.Exists(users[i] + _equipDataFile)) {
+                        string[] data = File.ReadAllLines(users[i] + _equipDataFile);
+                        List<string> aa = data.Where(x => (x.Split(new char[] { '\t' })[1]) == selectEquipItem).ToList();
+                        for (int j = 0; j < aa.Count; j++) {
+                            string[] parts = aa[j].Split(new char[] { '\t' });
+                            string[] ability = parts[2].Split(new char[] { ' ' }).Where(y =>
+                                y.Contains("錬金:") ||
+                                y.Contains("合成:") ||
+                                y.Contains("伝承:") ||
+                                y.Contains("輝石:") ||
+                                y.Contains("秘石:") ||
+                                y.Contains("戦神:") ||
+                                y.Contains("鬼石:"))
+                                .Select(y => y
+                                .Replace("0", "")
+                                .Replace("1", "")
+                                .Replace("2", "")
+                                .Replace("3", "")
+                                .Replace("4", "")
+                                .Replace("5", "")
+                                .Replace("6", "")
+                                .Replace("7", "")
+                                .Replace("8", "")
+                                .Replace("9", "")
+                                .Replace("(", "")
+                                .Replace(")", "")
+                                .Replace("+", "")
+                                .Replace("-", "")
+                                .Replace(".", "")
+                                .Replace("%", "")
+                                ).ToArray();
+                            if (ability.Where(x => x == selectAbilityItem).Count() > 0) {
+                                resultList.Items.Add(users[i] + "\t" + aa[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+
+            }
+
         }
     }
 }

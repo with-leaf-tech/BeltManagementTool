@@ -54,9 +54,22 @@
             this.logTextBox2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ocrRadioGoogle = new System.Windows.Forms.RadioButton();
-            this.ocrRadioWindows = new System.Windows.Forms.RadioButton();
             this.ocrRadioTesseract = new System.Windows.Forms.RadioButton();
+            this.ocrRadioWindows = new System.Windows.Forms.RadioButton();
+            this.ocrRadioGoogle = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.positionSetting0 = new System.Windows.Forms.RadioButton();
+            this.positionSetting1 = new System.Windows.Forms.RadioButton();
+            this.positionSetting2 = new System.Windows.Forms.RadioButton();
+            this.resultList = new System.Windows.Forms.ListBox();
+            this.equipList = new System.Windows.Forms.ListBox();
+            this.abilityList = new System.Windows.Forms.ListBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.selectEquip = new System.Windows.Forms.RadioButton();
+            this.selectItem = new System.Windows.Forms.RadioButton();
+            this.allUser = new System.Windows.Forms.RadioButton();
+            this.selectUser = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -65,6 +78,9 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -77,7 +93,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(429, 36);
+            this.button1.Location = new System.Drawing.Point(506, 36);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -217,11 +233,11 @@
             // 
             // logTextBox1
             // 
-            this.logTextBox1.Location = new System.Drawing.Point(0, 235);
+            this.logTextBox1.Location = new System.Drawing.Point(12, 235);
             this.logTextBox1.Multiline = true;
             this.logTextBox1.Name = "logTextBox1";
             this.logTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox1.Size = new System.Drawing.Size(395, 215);
+            this.logTextBox1.Size = new System.Drawing.Size(383, 215);
             this.logTextBox1.TabIndex = 12;
             // 
             // groupBox1
@@ -230,15 +246,15 @@
             this.groupBox1.Controls.Add(this.button6);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.numericUpDown5);
-            this.groupBox1.Location = new System.Drawing.Point(415, 65);
+            this.groupBox1.Location = new System.Drawing.Point(491, 94);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(121, 151);
+            this.groupBox1.Size = new System.Drawing.Size(90, 118);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(14, 113);
+            this.button7.Location = new System.Drawing.Point(8, 89);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 16;
@@ -248,7 +264,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(14, 55);
+            this.button6.Location = new System.Drawing.Point(8, 60);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 14;
@@ -259,7 +275,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 15);
+            this.label3.Location = new System.Drawing.Point(6, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 12);
             this.label3.TabIndex = 15;
@@ -267,7 +283,7 @@
             // 
             // numericUpDown5
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(14, 30);
+            this.numericUpDown5.Location = new System.Drawing.Point(8, 35);
             this.numericUpDown5.Maximum = new decimal(new int[] {
             2160,
             0,
@@ -293,7 +309,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(429, 7);
+            this.button8.Location = new System.Drawing.Point(506, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 14;
@@ -303,21 +319,21 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(542, 120);
+            this.textBox1.Location = new System.Drawing.Point(587, 139);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(120, 19);
             this.textBox1.TabIndex = 15;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(542, 164);
+            this.textBox2.Location = new System.Drawing.Point(587, 164);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(120, 19);
             this.textBox2.TabIndex = 16;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(587, 189);
+            this.button9.Location = new System.Drawing.Point(632, 189);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(75, 23);
             this.button9.TabIndex = 17;
@@ -329,7 +345,7 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(542, 7);
+            this.listBox1.Location = new System.Drawing.Point(587, 2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(120, 100);
             this.listBox1.TabIndex = 18;
@@ -337,7 +353,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(669, 7);
+            this.button10.Location = new System.Drawing.Point(713, 2);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(75, 23);
             this.button10.TabIndex = 19;
@@ -347,7 +363,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(669, 36);
+            this.button11.Location = new System.Drawing.Point(713, 36);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(75, 23);
             this.button11.TabIndex = 20;
@@ -357,7 +373,7 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(669, 189);
+            this.button12.Location = new System.Drawing.Point(713, 189);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(75, 23);
             this.button12.TabIndex = 21;
@@ -388,35 +404,11 @@
             this.groupBox2.Controls.Add(this.ocrRadioTesseract);
             this.groupBox2.Controls.Add(this.ocrRadioWindows);
             this.groupBox2.Controls.Add(this.ocrRadioGoogle);
-            this.groupBox2.Location = new System.Drawing.Point(5, 101);
+            this.groupBox2.Location = new System.Drawing.Point(410, 94);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(73, 115);
+            this.groupBox2.Size = new System.Drawing.Size(75, 122);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
-            // 
-            // ocrRadioGoogle
-            // 
-            this.ocrRadioGoogle.AutoSize = true;
-            this.ocrRadioGoogle.Location = new System.Drawing.Point(3, 19);
-            this.ocrRadioGoogle.Name = "ocrRadioGoogle";
-            this.ocrRadioGoogle.Size = new System.Drawing.Size(58, 16);
-            this.ocrRadioGoogle.TabIndex = 0;
-            this.ocrRadioGoogle.TabStop = true;
-            this.ocrRadioGoogle.Text = "Google";
-            this.ocrRadioGoogle.UseVisualStyleBackColor = true;
-            this.ocrRadioGoogle.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
-            // 
-            // ocrRadioWindows
-            // 
-            this.ocrRadioWindows.AutoSize = true;
-            this.ocrRadioWindows.Location = new System.Drawing.Point(3, 42);
-            this.ocrRadioWindows.Name = "ocrRadioWindows";
-            this.ocrRadioWindows.Size = new System.Drawing.Size(67, 16);
-            this.ocrRadioWindows.TabIndex = 1;
-            this.ocrRadioWindows.TabStop = true;
-            this.ocrRadioWindows.Text = "Windows";
-            this.ocrRadioWindows.UseVisualStyleBackColor = true;
-            this.ocrRadioWindows.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
             // 
             // ocrRadioTesseract
             // 
@@ -430,11 +422,185 @@
             this.ocrRadioTesseract.UseVisualStyleBackColor = true;
             this.ocrRadioTesseract.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
             // 
+            // ocrRadioWindows
+            // 
+            this.ocrRadioWindows.AutoSize = true;
+            this.ocrRadioWindows.Location = new System.Drawing.Point(3, 42);
+            this.ocrRadioWindows.Name = "ocrRadioWindows";
+            this.ocrRadioWindows.Size = new System.Drawing.Size(67, 16);
+            this.ocrRadioWindows.TabIndex = 1;
+            this.ocrRadioWindows.TabStop = true;
+            this.ocrRadioWindows.Text = "Windows";
+            this.ocrRadioWindows.UseVisualStyleBackColor = true;
+            this.ocrRadioWindows.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
+            // ocrRadioGoogle
+            // 
+            this.ocrRadioGoogle.AutoSize = true;
+            this.ocrRadioGoogle.Location = new System.Drawing.Point(3, 19);
+            this.ocrRadioGoogle.Name = "ocrRadioGoogle";
+            this.ocrRadioGoogle.Size = new System.Drawing.Size(58, 16);
+            this.ocrRadioGoogle.TabIndex = 0;
+            this.ocrRadioGoogle.TabStop = true;
+            this.ocrRadioGoogle.Text = "Google";
+            this.ocrRadioGoogle.UseVisualStyleBackColor = true;
+            this.ocrRadioGoogle.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.positionSetting2);
+            this.groupBox3.Controls.Add(this.positionSetting1);
+            this.groupBox3.Controls.Add(this.positionSetting0);
+            this.groupBox3.Location = new System.Drawing.Point(410, 7);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(77, 85);
+            this.groupBox3.TabIndex = 25;
+            this.groupBox3.TabStop = false;
+            // 
+            // positionSetting0
+            // 
+            this.positionSetting0.AutoSize = true;
+            this.positionSetting0.Location = new System.Drawing.Point(6, 18);
+            this.positionSetting0.Name = "positionSetting0";
+            this.positionSetting0.Size = new System.Drawing.Size(53, 16);
+            this.positionSetting0.TabIndex = 0;
+            this.positionSetting0.TabStop = true;
+            this.positionSetting0.Text = "設定1";
+            this.positionSetting0.UseVisualStyleBackColor = true;
+            this.positionSetting0.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
+            // 
+            // positionSetting1
+            // 
+            this.positionSetting1.AutoSize = true;
+            this.positionSetting1.Location = new System.Drawing.Point(6, 41);
+            this.positionSetting1.Name = "positionSetting1";
+            this.positionSetting1.Size = new System.Drawing.Size(53, 16);
+            this.positionSetting1.TabIndex = 1;
+            this.positionSetting1.TabStop = true;
+            this.positionSetting1.Text = "設定2";
+            this.positionSetting1.UseVisualStyleBackColor = true;
+            this.positionSetting1.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
+            // 
+            // positionSetting2
+            // 
+            this.positionSetting2.AutoSize = true;
+            this.positionSetting2.Location = new System.Drawing.Point(6, 63);
+            this.positionSetting2.Name = "positionSetting2";
+            this.positionSetting2.Size = new System.Drawing.Size(53, 16);
+            this.positionSetting2.TabIndex = 2;
+            this.positionSetting2.TabStop = true;
+            this.positionSetting2.Text = "設定3";
+            this.positionSetting2.UseVisualStyleBackColor = true;
+            this.positionSetting2.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
+            // 
+            // resultList
+            // 
+            this.resultList.FormattingEnabled = true;
+            this.resultList.ItemHeight = 12;
+            this.resultList.Location = new System.Drawing.Point(209, 505);
+            this.resultList.Name = "resultList";
+            this.resultList.Size = new System.Drawing.Size(592, 244);
+            this.resultList.TabIndex = 26;
+            // 
+            // equipList
+            // 
+            this.equipList.FormattingEnabled = true;
+            this.equipList.ItemHeight = 12;
+            this.equipList.Location = new System.Drawing.Point(13, 505);
+            this.equipList.Name = "equipList";
+            this.equipList.Size = new System.Drawing.Size(92, 244);
+            this.equipList.TabIndex = 27;
+            this.equipList.SelectedIndexChanged += new System.EventHandler(this.equipList_SelectedIndexChanged);
+            // 
+            // abilityList
+            // 
+            this.abilityList.FormattingEnabled = true;
+            this.abilityList.ItemHeight = 12;
+            this.abilityList.Location = new System.Drawing.Point(111, 505);
+            this.abilityList.Name = "abilityList";
+            this.abilityList.Size = new System.Drawing.Size(92, 244);
+            this.abilityList.TabIndex = 28;
+            this.abilityList.SelectedIndexChanged += new System.EventHandler(this.abilityList_SelectedIndexChanged);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.selectItem);
+            this.groupBox4.Controls.Add(this.selectEquip);
+            this.groupBox4.Location = new System.Drawing.Point(15, 457);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(199, 34);
+            this.groupBox4.TabIndex = 29;
+            this.groupBox4.TabStop = false;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.selectUser);
+            this.groupBox5.Controls.Add(this.allUser);
+            this.groupBox5.Location = new System.Drawing.Point(228, 457);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(199, 34);
+            this.groupBox5.TabIndex = 30;
+            this.groupBox5.TabStop = false;
+            // 
+            // selectEquip
+            // 
+            this.selectEquip.AutoSize = true;
+            this.selectEquip.Location = new System.Drawing.Point(7, 12);
+            this.selectEquip.Name = "selectEquip";
+            this.selectEquip.Size = new System.Drawing.Size(59, 16);
+            this.selectEquip.TabIndex = 0;
+            this.selectEquip.TabStop = true;
+            this.selectEquip.Text = "装備品";
+            this.selectEquip.UseVisualStyleBackColor = true;
+            this.selectEquip.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            // 
+            // selectItem
+            // 
+            this.selectItem.AutoSize = true;
+            this.selectItem.Location = new System.Drawing.Point(96, 12);
+            this.selectItem.Name = "selectItem";
+            this.selectItem.Size = new System.Drawing.Size(60, 16);
+            this.selectItem.TabIndex = 1;
+            this.selectItem.TabStop = true;
+            this.selectItem.Text = "アイテム";
+            this.selectItem.UseVisualStyleBackColor = true;
+            this.selectItem.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            // 
+            // allUser
+            // 
+            this.allUser.AutoSize = true;
+            this.allUser.Location = new System.Drawing.Point(6, 12);
+            this.allUser.Name = "allUser";
+            this.allUser.Size = new System.Drawing.Size(75, 16);
+            this.allUser.TabIndex = 1;
+            this.allUser.TabStop = true;
+            this.allUser.Text = "全ユーザー";
+            this.allUser.UseVisualStyleBackColor = true;
+            this.allUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            // 
+            // selectUser
+            // 
+            this.selectUser.AutoSize = true;
+            this.selectUser.Location = new System.Drawing.Point(101, 12);
+            this.selectUser.Name = "selectUser";
+            this.selectUser.Size = new System.Drawing.Size(87, 16);
+            this.selectUser.TabIndex = 2;
+            this.selectUser.TabStop = true;
+            this.selectUser.Text = "選択ユーザー";
+            this.selectUser.UseVisualStyleBackColor = true;
+            this.selectUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(894, 773);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.abilityList);
+            this.Controls.Add(this.equipList);
+            this.Controls.Add(this.resultList);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.logTextBox2);
@@ -473,6 +639,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,6 +685,19 @@
         private System.Windows.Forms.RadioButton ocrRadioTesseract;
         private System.Windows.Forms.RadioButton ocrRadioWindows;
         private System.Windows.Forms.RadioButton ocrRadioGoogle;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton positionSetting2;
+        private System.Windows.Forms.RadioButton positionSetting1;
+        private System.Windows.Forms.RadioButton positionSetting0;
+        private System.Windows.Forms.ListBox resultList;
+        private System.Windows.Forms.ListBox equipList;
+        private System.Windows.Forms.ListBox abilityList;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton selectItem;
+        private System.Windows.Forms.RadioButton selectEquip;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.RadioButton selectUser;
+        private System.Windows.Forms.RadioButton allUser;
     }
 }
 

@@ -58,16 +58,41 @@ namespace BeltManagementTool {
 
         private void button1_Click(object sender, EventArgs e) {
             string saveFile = "";
+
             StringBuilder sb = new StringBuilder();
             if (_name.Length > 0) {
                 saveFile = _user + _equipDataFile;
                 sb.Append(_name + "\t");
                 sb.Append(_parts + "\t");
                 sb.Append(string.Join(" ", _detailList));
+
+                if (checkBox1.Checked) {
+                    if (File.Exists(saveFile)) {
+                        File.Delete(saveFile);
+                    }
+                    checkBox1.Checked = false;
+                }
+
+                if (File.Exists(saveFile)) {
+                    string[] data = File.ReadAllLines(saveFile);
+                    if(data.Where(x => x == sb.ToString()).Count() > 0) {
+                        if(MessageBox.Show("同じものがあります。追加しますか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) {
+                            this.Hide();
+                            return;
+                        }
+                    }
+                }
             }
             else {
                 saveFile = _user + _itemDataFile;
                 sb.Append(string.Join(Environment.NewLine, _detailList));
+
+                if (checkBox1.Checked) {
+                    if (File.Exists(saveFile)) {
+                        File.Delete(saveFile);
+                    }
+                    checkBox1.Checked = false;
+                }
             }
 
             File.AppendAllLines(saveFile, new string[] { sb.ToString() });
