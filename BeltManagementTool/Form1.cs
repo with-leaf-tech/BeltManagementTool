@@ -44,6 +44,7 @@ namespace BeltManagementTool {
         List<string> detailList = new List<string>();
 
         Form2 entryWindow = new Form2();
+        Form3 updateWindow = new Form3();
 
         public Form1() {
             InitializeComponent();
@@ -563,8 +564,14 @@ O装備できる仲間モンスターを見る
         }
 
         private void button9_Click(object sender, EventArgs e) {
-            logTextBox2.Text = logTextBox1.Text.Replace(textBox1.Text, textBox2.Text);
             replaceWordDic[textBox1.Text] = textBox2.Text;
+
+            string text = logTextBox2.Text;
+            foreach (string key in replaceWordDic.Keys) {
+                text = text.Replace(key, replaceWordDic[key]);
+            }
+            logTextBox2.Text = text;
+            
             outputReplaceWords();
         }
 
@@ -775,6 +782,31 @@ O装備できる仲間モンスターを見る
             else {
 
             }
+
+        }
+
+        private void resultList_DoubleClick(object sender, EventArgs e) {
+            string selectedItem = ((ListBox)sender).SelectedItem.ToString();
+            if(selectedItem.Length > 0) {
+                string[] parts = selectedItem.Split(new char[] { '\t' });
+                if(parts.Length > 3) {
+                    string user = parts[0];
+                    string name = parts[1];
+                    string equip = parts[2];
+                    List<string> detailList = new List<string>();
+                    string[] detail = parts[3].Split(new char[] { ' ' });
+                    updateWindow.setItems(name, equip, user, detail.ToList());
+                }
+                else {
+                    parts = selectedItem.Split(new char[] { ' ' });
+                    string user = parts[0];
+                    string equip = parts[1];
+                    string count = parts[2];
+                    updateWindow.setItems("", equip, user, count);
+                }
+                updateWindow.Show();
+            }
+
 
         }
     }

@@ -58,18 +58,18 @@
             this.ocrRadioWindows = new System.Windows.Forms.RadioButton();
             this.ocrRadioGoogle = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.positionSetting0 = new System.Windows.Forms.RadioButton();
-            this.positionSetting1 = new System.Windows.Forms.RadioButton();
             this.positionSetting2 = new System.Windows.Forms.RadioButton();
+            this.positionSetting1 = new System.Windows.Forms.RadioButton();
+            this.positionSetting0 = new System.Windows.Forms.RadioButton();
             this.resultList = new System.Windows.Forms.ListBox();
             this.equipList = new System.Windows.Forms.ListBox();
             this.abilityList = new System.Windows.Forms.ListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.selectEquip = new System.Windows.Forms.RadioButton();
             this.selectItem = new System.Windows.Forms.RadioButton();
-            this.allUser = new System.Windows.Forms.RadioButton();
+            this.selectEquip = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.selectUser = new System.Windows.Forms.RadioButton();
+            this.allUser = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -457,17 +457,17 @@
             this.groupBox3.TabIndex = 25;
             this.groupBox3.TabStop = false;
             // 
-            // positionSetting0
+            // positionSetting2
             // 
-            this.positionSetting0.AutoSize = true;
-            this.positionSetting0.Location = new System.Drawing.Point(6, 18);
-            this.positionSetting0.Name = "positionSetting0";
-            this.positionSetting0.Size = new System.Drawing.Size(53, 16);
-            this.positionSetting0.TabIndex = 0;
-            this.positionSetting0.TabStop = true;
-            this.positionSetting0.Text = "設定1";
-            this.positionSetting0.UseVisualStyleBackColor = true;
-            this.positionSetting0.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
+            this.positionSetting2.AutoSize = true;
+            this.positionSetting2.Location = new System.Drawing.Point(6, 63);
+            this.positionSetting2.Name = "positionSetting2";
+            this.positionSetting2.Size = new System.Drawing.Size(53, 16);
+            this.positionSetting2.TabIndex = 2;
+            this.positionSetting2.TabStop = true;
+            this.positionSetting2.Text = "設定3";
+            this.positionSetting2.UseVisualStyleBackColor = true;
+            this.positionSetting2.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
             // 
             // positionSetting1
             // 
@@ -481,17 +481,17 @@
             this.positionSetting1.UseVisualStyleBackColor = true;
             this.positionSetting1.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
             // 
-            // positionSetting2
+            // positionSetting0
             // 
-            this.positionSetting2.AutoSize = true;
-            this.positionSetting2.Location = new System.Drawing.Point(6, 63);
-            this.positionSetting2.Name = "positionSetting2";
-            this.positionSetting2.Size = new System.Drawing.Size(53, 16);
-            this.positionSetting2.TabIndex = 2;
-            this.positionSetting2.TabStop = true;
-            this.positionSetting2.Text = "設定3";
-            this.positionSetting2.UseVisualStyleBackColor = true;
-            this.positionSetting2.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
+            this.positionSetting0.AutoSize = true;
+            this.positionSetting0.Location = new System.Drawing.Point(6, 18);
+            this.positionSetting0.Name = "positionSetting0";
+            this.positionSetting0.Size = new System.Drawing.Size(53, 16);
+            this.positionSetting0.TabIndex = 0;
+            this.positionSetting0.TabStop = true;
+            this.positionSetting0.Text = "設定1";
+            this.positionSetting0.UseVisualStyleBackColor = true;
+            this.positionSetting0.CheckedChanged += new System.EventHandler(this.positionSetting_CheckedChanged);
             // 
             // resultList
             // 
@@ -501,6 +501,7 @@
             this.resultList.Name = "resultList";
             this.resultList.Size = new System.Drawing.Size(592, 244);
             this.resultList.TabIndex = 26;
+            this.resultList.DoubleClick += new System.EventHandler(this.resultList_DoubleClick);
             // 
             // equipList
             // 
@@ -532,15 +533,17 @@
             this.groupBox4.TabIndex = 29;
             this.groupBox4.TabStop = false;
             // 
-            // groupBox5
+            // selectItem
             // 
-            this.groupBox5.Controls.Add(this.selectUser);
-            this.groupBox5.Controls.Add(this.allUser);
-            this.groupBox5.Location = new System.Drawing.Point(228, 457);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(199, 34);
-            this.groupBox5.TabIndex = 30;
-            this.groupBox5.TabStop = false;
+            this.selectItem.AutoSize = true;
+            this.selectItem.Location = new System.Drawing.Point(96, 12);
+            this.selectItem.Name = "selectItem";
+            this.selectItem.Size = new System.Drawing.Size(60, 16);
+            this.selectItem.TabIndex = 1;
+            this.selectItem.TabStop = true;
+            this.selectItem.Text = "アイテム";
+            this.selectItem.UseVisualStyleBackColor = true;
+            this.selectItem.CheckedChanged += new System.EventHandler(this.searchRadioChange);
             // 
             // selectEquip
             // 
@@ -554,29 +557,15 @@
             this.selectEquip.UseVisualStyleBackColor = true;
             this.selectEquip.CheckedChanged += new System.EventHandler(this.searchRadioChange);
             // 
-            // selectItem
+            // groupBox5
             // 
-            this.selectItem.AutoSize = true;
-            this.selectItem.Location = new System.Drawing.Point(96, 12);
-            this.selectItem.Name = "selectItem";
-            this.selectItem.Size = new System.Drawing.Size(60, 16);
-            this.selectItem.TabIndex = 1;
-            this.selectItem.TabStop = true;
-            this.selectItem.Text = "アイテム";
-            this.selectItem.UseVisualStyleBackColor = true;
-            this.selectItem.CheckedChanged += new System.EventHandler(this.searchRadioChange);
-            // 
-            // allUser
-            // 
-            this.allUser.AutoSize = true;
-            this.allUser.Location = new System.Drawing.Point(6, 12);
-            this.allUser.Name = "allUser";
-            this.allUser.Size = new System.Drawing.Size(75, 16);
-            this.allUser.TabIndex = 1;
-            this.allUser.TabStop = true;
-            this.allUser.Text = "全ユーザー";
-            this.allUser.UseVisualStyleBackColor = true;
-            this.allUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            this.groupBox5.Controls.Add(this.selectUser);
+            this.groupBox5.Controls.Add(this.allUser);
+            this.groupBox5.Location = new System.Drawing.Point(228, 457);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(199, 34);
+            this.groupBox5.TabIndex = 30;
+            this.groupBox5.TabStop = false;
             // 
             // selectUser
             // 
@@ -589,6 +578,18 @@
             this.selectUser.Text = "選択ユーザー";
             this.selectUser.UseVisualStyleBackColor = true;
             this.selectUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
+            // 
+            // allUser
+            // 
+            this.allUser.AutoSize = true;
+            this.allUser.Location = new System.Drawing.Point(6, 12);
+            this.allUser.Name = "allUser";
+            this.allUser.Size = new System.Drawing.Size(75, 16);
+            this.allUser.TabIndex = 1;
+            this.allUser.TabStop = true;
+            this.allUser.Text = "全ユーザー";
+            this.allUser.UseVisualStyleBackColor = true;
+            this.allUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
             // 
             // Form1
             // 
