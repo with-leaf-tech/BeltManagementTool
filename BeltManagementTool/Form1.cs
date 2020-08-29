@@ -1,4 +1,6 @@
-﻿using BeltManagementTool.Entity;
+﻿using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
+using BeltManagementTool.Entity;
 using BeltManagementTool.OCR;
 using Google.Apis.Services;
 using Google.Apis.Vision.v1;
@@ -10,8 +12,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -33,8 +38,15 @@ namespace BeltManagementTool {
 
         private string _itemDataFile = "_item.txt";
         private string _equipDataFile = "_equip.txt";
+        private string _itemDicFile = "itemDictionary.txt";
         
         string[] equips = new string[] { "鎌", "両手杖", "アタマ", "からだ上", "からだ下", "ウデ", "足", "顔", "首", "指", "胸", "腰", "札", "その他", "紋章", "証" };
+        string[] jobs = new string[] { "戦士", "僧侶", "魔使", "武闘", "盗賊", "旅芸", "バト", "パラ", "魔戦", "レン", "賢者", "スパ", "まも", "どう", "踊り", "占い", "天地", "遊び", "デス" };
+        string[] regists = new string[] { "呪いガード", "即死ガード", "闇ダメージ" };
+
+
+        List<Dictionary<string, string>> itemDictionary = new List<Dictionary<string, string>>();
+
 
         Dictionary<string, string> replaceWordDic = new Dictionary<string, string>();
         List<string[]> settingData = new List<string[]>();
@@ -56,11 +68,43 @@ namespace BeltManagementTool {
                     replaceWordDic[words[0]] = words[1];
                 }
             }
+            if (File.Exists(_itemDicFile)) {
+                string[] lines = File.ReadAllLines(_itemDicFile);
+                for (int i = 0; i < lines.Length; i++) {
+                    string[] line = lines[i].Split(new char[] { '\t' });
+                    Dictionary<string, string> item = new Dictionary<string, string>();
+                    for (int j = 0; j < line.Length; j++) {
+                        string[] parts = line[j].Split(new string[] { "!_!" }, StringSplitOptions.RemoveEmptyEntries);
+                        if(parts.Length > 1) {
+                            item[parts[0]] = parts[1];
+                        }
+                        else {
+                            item[parts[0]] = "";
+                        }
+                    }
+                    itemDictionary.Add(item);
+                }
+            }
+
             loadUserData();
             loadPositionData();
 
             selectEquip.Checked = true;
             selectUser.Checked = true;
+
+            jobList.Items.AddRange(jobs);
+            jobList.SelectedIndex = 0;
+
+            for (int i = 0; i < regists.Length; i++) {
+                Control[] comboBox = this.Controls.Find("registBox" + i, true);
+                List<string> items = new List<string>();
+                items.Add(regists[i] + " 指定なし");
+                for (int j = 1; j <= 10; j++) {
+                    items.Add(regists[i] + " " + (j * 10) + "%以上");
+                }
+                ((System.Windows.Forms.ComboBox)comboBox[0]).Items.AddRange(items.ToArray());
+                ((System.Windows.Forms.ComboBox)comboBox[0]).SelectedIndex = 0;
+            }
 
             initialize();
         }
@@ -196,7 +240,9 @@ namespace BeltManagementTool {
         private void timer1_Tick(object sender, EventArgs e) {
             timer1.Enabled = false;
             screenCapture();
-            BeltEntity entity = GetOCRTest();
+            button1_Click(null,null);
+            button12_Click(null, null);
+
             timer1.Enabled = true;
         }
 
@@ -384,10 +430,12 @@ namespace BeltManagementTool {
                 if (name.Length == 0) {
                     name = tempName.Replace(" ", "");
                 }
-                for (int i = 0; i < namehead.Length; i++) {
-                    if (name.Substring(0, namehead[i].Length) == namehead[i]) {
-                        name = name.Substring(namehead[i].Length);
-                        break;
+                if(name.Length > 0) {
+                    for (int i = 0; i < namehead.Length; i++) {
+                        if (name.Substring(0, namehead[i].Length) == namehead[i]) {
+                            name = name.Substring(namehead[i].Length);
+                            break;
+                        }
                     }
                 }
                 if (name.IndexOf("+") > 0 && name.IndexOf("+") + 2 != name.Length) {
@@ -431,23 +479,20 @@ namespace BeltManagementTool {
 
         private void button8_Click(object sender, EventArgs e) {
             string text = @"
-2神域の杖+3
-両手杖レア度 B
-死んでも早詠みの 使い込み。店売り不可
-効果が残りうる
-行動しやすい杖
-Lv 99以上装備可
+S輝石のベルト+4
+腰アクセサリーレア度 A
+とりどりの宝石が
+さまざまな効果を
+生み出すベルト
+取り引き不可
+Lv 1以上装備可
 追加効果
-錬金石D赤の練金石
-基礎効果:死亡時 50.0%で早詠みの杖が消えない
-基礎効果:2.0%でタ-ン消費なし(試合無効)
-錬金効果:呪文ぼうそう率 +1.4(-0.9)%
-錬金効果:攻撃時 4%でマヒ
-錬金効果:攻撃時 4%でルカニ
-できのよさ: 攻撃魔力 +6
-戦士 僧侶 魔使 武闘 盗賊 旅芸 バト パラ 魔戦 レン 買賢者 スパ
+輝石効果:金かいしん率 +1.0%
+輝石効果:金きいだい H P +10
+輝石効果:金见いガード+10.0%
+秘石効果:こうげきカ +8
+戦士 僧侶 魔使 武闘 盗賊 旅芸 バト パラ 魔戦 レン 賢者 スパ
 まも どう 踊り 占い 天地 遊び デス
-0錬金強化を見る
 O装備できる仲間モンスターを見る
 ";
 
@@ -667,8 +712,9 @@ O装備できる仲間モンスターを見る
                 for(int i = 0; i < users.Count; i++) {
                     if (File.Exists(users[i] + _equipDataFile)) {
                         string[] data = File.ReadAllLines(users[i] + _equipDataFile);
-                        List<string[]> aa = data.Where(x => (x.Split(new char[] { '\t' })[1]) == selectEquipItem).Select(x => (x.Split(new char[] { '\t' })[2]).Split(new char[] { ' ' })).ToList();
-                        List<string[]> bb = aa.Select(x => x.Where(y =>
+                        List<string> aa = data.Where(x => (x.Split(new char[] { '\t' })[1]) == selectEquipItem).ToList();
+                        List<string[]> ab = aa.Select(x => (x.Split(new char[] { '\t' })[2]).Split(new char[] { ' ' })).ToList();
+                        List<string[]> bb = ab.Select(x => x.Where(y =>
                         y.Contains("錬金:") ||
                         y.Contains("合成:") ||
                         y.Contains("伝承:") ||
@@ -697,6 +743,7 @@ O装備できる仲間モンスターを見る
 
                         bb.ForEach(x => ability.AddRange(x));
                         abilityList.Items.AddRange(ability.Distinct().ToArray());
+                        resultList.Items.AddRange(aa.Select(x => users[i] + "\t" + x).ToArray());
                     }
                 }
 
@@ -799,15 +846,497 @@ O装備できる仲間モンスターを見る
                 }
                 else {
                     parts = selectedItem.Split(new char[] { ' ' });
+                    if(parts.Length < 3) {
+                        return;
+                    }
                     string user = parts[0];
                     string equip = parts[1];
                     string count = parts[2];
+                    if(!listBox1.Items.Contains(user)) {
+                        return;
+                    }
                     updateWindow.setItems("", equip, user, count);
                 }
                 updateWindow.Show();
             }
 
 
+        }
+
+        private void button13_Click(object sender, EventArgs e) {
+            string[] setEquipUrls = new string[] {
+                "http://bazaar.d-quest-10.com/list/sp_set/lv_1.html" 
+            };
+
+            string[] equipUrls = new string[] { 
+                "http://bazaar.d-quest-10.com/list/d_head/lv_1.html", 
+                "http://bazaar.d-quest-10.com/list/d_upper/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/d_lower/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/d_arm/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/d_leg/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/d_shield/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_hand/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_both/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_short/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_spear/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_axe/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_claw/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_whip/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_stick/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_cane/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_club/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_fan/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_hammer/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_bow/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_boomerang/lv_1.html",
+                "http://bazaar.d-quest-10.com/list/w_falx/lv_1.html"
+            };
+
+            string[] equipAccessoryUrls = new string[] {
+                "http://bazaar.d-quest-10.com/list/d_accessory/pop_2.html"
+            };
+
+            string[] setHeader = new string[] { "LV", "セット名", "必要装備", "守備", "重さ", "攻魔", "回魔", "器用", "早さ", "おしゃれ", "セット特殊効果", "セット効果", "装備職" };
+            string[] equipHeader = new string[] { "アイテム名","LV","分類","出品数","最安値","★","★★","★★★","広場", "効果", "装備職", "空白" };
+            string[] accessoryHeader = new string[] { "アイテム名", "分類", "出品数", "最安値", "店買価格", "店売価格", "広場", "効果", "空白" };
+
+            List<Dictionary<string, string>> itemList = new List<Dictionary<string, string>>();
+            for(int i = 0; i < setEquipUrls.Length; i++ ) {
+                itemList.AddRange(getItemData(setHeader, setEquipUrls[i]));
+            }
+
+            for (int i = 0; i < equipUrls.Length; i++) {
+                itemList.AddRange(getItemData(equipHeader, equipUrls[i]));
+            }
+
+            for (int i = 0; i < equipAccessoryUrls.Length; i++) {
+                itemList.AddRange(getItemData(accessoryHeader, equipAccessoryUrls[i]));
+            }
+
+            itemDictionary = itemList;
+
+            StringBuilder allItemString = new StringBuilder();
+            for (int i = 0; i < itemList.Count; i++) {
+                StringBuilder sb = new StringBuilder();
+                foreach (string key in itemList[i].Keys) {
+                    if(sb.Length != 0) {
+                        sb.Append("\t");
+                    }
+                    sb.Append(key + "!_!" + itemList[i][key]);
+                }
+                allItemString.Append(sb.ToString() + Environment.NewLine);
+            }
+            File.WriteAllText(_itemDicFile, allItemString.ToString());
+
+            int a = 0;
+        }
+
+        private List<Dictionary<string, string>> getItemData(string[] header, string url) {
+            List<Dictionary<string, string>> equipSetList = new List<Dictionary<string, string>>();
+
+            // 指定したサイトのHTMLをストリームで取得する
+            WebRequest req = WebRequest.Create(url);
+            var doc = default(IHtmlDocument);
+            using (WebResponse res = req.GetResponse())
+            using (Stream stream = res.GetResponseStream()) {
+                var parser = new HtmlParser();
+                doc = parser.ParseDocument(stream);
+            }
+
+            int headerIndex = 0;
+
+            AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> urlElements = doc.QuerySelectorAll("table");
+            for (int i = 0; i < urlElements.Count(); i++) {
+                if (urlElements[i].InnerHtml.Contains(header[0])) {
+                    AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> lines = urlElements[i].QuerySelectorAll("tr");
+                    Dictionary<string, string> equipSet = new Dictionary<string, string>();
+                    for (int j = 0; j < lines.Count(); j++) {
+                        if (lines[j].InnerHtml.Contains(header[0])) {
+                            continue;
+                        }
+                        AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> columns = lines[j].QuerySelectorAll("td");
+                        for (int k = 0; k < columns.Count(); k++) {
+                            string text = "";
+                            /*
+                            if (columns[k].InnerHtml.Contains("href")) {
+                                AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> parts = columns[k].QuerySelectorAll("a");
+                                text = string.Join(",", parts.Select(x => x.InnerHtml).ToArray());
+                            }
+                            else if (columns[k].InnerHtml.Contains("div")) {
+                                AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> parts = columns[k].QuerySelectorAll("div");
+                                text = string.Join(",", parts.Select(x => x.InnerHtml).ToArray());
+                            }
+                            else {
+                            */
+
+                            text = columns[k].InnerHtml;
+                            text = text.Replace("\r\n", " ");
+                            text = text.Replace("\n", " ");
+                            text = text.Replace("<br>", ",");
+                            text = text.Replace("</div><div ", "</div>,<div ");
+                            text = Regex.Replace(text, @"<(([^>]|\n)*)>", "");
+
+
+                            if (header[headerIndex] != "空白" && header[headerIndex] != "装備職" && header[headerIndex] != "セット効果" && text.Length == 0) {
+                                continue;
+                            }
+                            if(text.Contains("adsbygoogle")) {
+                                continue;
+                            }
+                            //}
+                            equipSet[header[headerIndex++]] = text;
+                            if(headerIndex == header.Length) {
+                                equipSetList.Add(equipSet);
+                                equipSet = new Dictionary<string, string>();
+                                headerIndex = 0;
+                            }
+                        }
+                    }
+                }
+            }
+            return equipSetList;
+        }
+
+        private void registSearch() {
+            /*
+            int jobIndex = jobList.SelectedIndex;
+            int registIndex = registList.SelectedIndex;
+
+            string job = "全職業";
+            string regist = "";
+            if(jobIndex > 0) {
+                job = jobList.SelectedItem.ToString();
+            }
+            if(registIndex > 0) {
+                regist = registList.SelectedItem.ToString();
+            }
+
+            string[] data = File.ReadAllLines(listBox1.SelectedItem.ToString() + _equipDataFile);
+            */
+
+        }
+
+        private void button14_Click(object sender, EventArgs e) {
+            string job = jobList.SelectedItem.ToString();
+            string user = listBox1.SelectedItem.ToString();
+
+            int registSelectCount = 9;
+
+            Dictionary<string, float> targetRegistList = new Dictionary<string, float>();
+            Dictionary<string, float> orbRegistList = new Dictionary<string, float>();
+
+            for (int i = 0; i < registSelectCount; i++ ) {
+                if(regists.Length > i) {
+                    Control[] orbRegist = this.Controls.Find("registAppend" + i, true);
+                    orbRegistList[regists[i]] = float.Parse(((System.Windows.Forms.NumericUpDown)orbRegist[0]).Value.ToString());
+                }
+
+                Control[] comboBox = this.Controls.Find("registBox" + i, true);
+                if(((System.Windows.Forms.ComboBox)comboBox[0]).SelectedIndex >= 0) {
+                    string regist = ((System.Windows.Forms.ComboBox)comboBox[0]).SelectedItem.ToString();
+                    if (regist.Length != 0 && !regist.Contains("指定なし")) {
+                        if(regist.IndexOf("ガード") > 0) {
+                            string aa = regist.Substring(regist.IndexOf("ガード") + 4, regist.IndexOf("%") - (regist.IndexOf("ガード") + 4));
+                            targetRegistList[regist.Substring(0, regist.IndexOf("ガード") + 3)] = float.Parse(aa);
+                        }
+                        else {
+                            string aa = regist.Substring(regist.IndexOf("ダメージ") + 5, regist.IndexOf("%") - (regist.IndexOf("ダメージ") + 5));
+                            targetRegistList[regist.Substring(0, regist.IndexOf("ダメージ") + 4)] = float.Parse(aa);
+                        }
+                    }
+                }
+            }
+
+            string[] registParts = new string[] { "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "アクセサリー（顔）", "アクセサリー（指）", "アクセサリー（腰）", "アクセサリー（他）" };
+            string[] registInternalParts = new string[] { "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "顔", "指", "腰", "その他" };
+            string[] bodyParts = new string[] { "アタマ", "からだ上", "からだ下", "足" };
+            string[] appendParts = new string[] { };
+            if(includeFace.Checked) {
+                Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[bodyParts.Length - 1] = "顔";
+                Array.Resize(ref appendParts, appendParts.Length + 1);
+                appendParts[appendParts.Length - 1] = "顔";
+            }
+            if (includeFinger.Checked) {
+                Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[bodyParts.Length - 1] = "指";
+                Array.Resize(ref appendParts, appendParts.Length + 1);
+                appendParts[appendParts.Length - 1] = "指";
+            }
+            if (includeOther.Checked) {
+                Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[bodyParts.Length - 1] = "その他";
+                Array.Resize(ref appendParts, appendParts.Length + 1);
+                appendParts[appendParts.Length - 1] = "その他";
+            }
+            if (includeShield.Checked) {
+                Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[bodyParts.Length - 1] = "盾";
+                Array.Resize(ref appendParts, appendParts.Length + 1);
+                appendParts[appendParts.Length - 1] = "盾";
+            }
+            if (includeWaist.Checked) {
+                Array.Resize(ref bodyParts, bodyParts.Length + 1);
+                bodyParts[bodyParts.Length - 1] = "腰";
+                Array.Resize(ref appendParts, appendParts.Length + 1);
+                appendParts[appendParts.Length - 1] = "腰";
+            }
+
+            Dictionary<string, string> replaceParts = new Dictionary<string, string>();
+            for(int i = 0; i < registParts.Length; i++) {
+                replaceParts[registInternalParts[i]] = registParts[i];
+            }
+
+            List<Dictionary<string, string>> haveEquipList = new List<Dictionary<string, string>>();
+            string[] data = File.ReadAllLines(listBox1.SelectedItem.ToString() + _equipDataFile);
+            for(int i = 0; i < data.Length; i++) {
+                Dictionary<string, string> item = new Dictionary<string, string>();
+                string[] parts = data[i].Split(new char[] { '\t' });
+                string name = parts[0];
+                string equip = parts[1];
+                item["アイテム名"] = name;
+                item["分類"] = equip;
+                item["効果"] = parts[2];
+                string[] ability = parts[2].Split(new char[] { ' ' });
+                for(int j = 0; j < ability.Length; j++) {
+                    if(ability[j].Contains("ガード")) {
+                        string kind = ability[j].Substring(ability[j].IndexOf(":") + 1, (ability[j].IndexOf("ガード") + 3) - (ability[j].IndexOf(":") + 1));
+                        string grade = ability[j].Substring(ability[j].IndexOf("+") + 1, ability[j].Length - 1 - (ability[j].IndexOf("+") + 1)); // %を除外する
+                        float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
+                        if(!item.ContainsKey(kind)) {
+                            item[kind] = "0";
+                        }
+                        item[kind] = (float.Parse(item[kind]) + nGrade).ToString();
+                    }
+                    else if (ability[j].Contains("減")) {
+                        string kind = ability[j].Substring(ability[j].IndexOf(":") + 1, (ability[j].IndexOf("ダメージ") + 4) - (ability[j].IndexOf(":") + 1));
+                        string grade = ability[j].Substring(ability[j].IndexOf("ダメージ") + 4, ability[j].Length - 2 - (ability[j].IndexOf("ダメージ") + 4)); // %減を除外する
+                        float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
+                        if (!item.ContainsKey(kind)) {
+                            item[kind] = "0";
+                        }
+                        item[kind] = (float.Parse(item[kind]) + nGrade).ToString();
+                    }
+                }
+                haveEquipList.Add(item);
+            }
+
+
+            List<Dictionary<string, string>> setEquips = itemDictionary.Where(x => x.ContainsKey("セット効果")).Where(x => x["装備職"].Contains(job)).OrderByDescending(x => int.Parse(x["LV"])).ToList();
+            List<Dictionary<string, string>> allEquips = itemDictionary.Where(x => !x.ContainsKey("セット効果")).Where(x => (!x.ContainsKey("装備職") ||  (x.ContainsKey("装備職") && x["装備職"].Contains(job))) && registParts.Contains(x["分類"])).OrderBy(x => int.Parse(x.ContainsKey("LV") ? x["LV"] : "1")).ToList();
+
+            if(onlySetEquip.Checked) {
+                // まずレベルの高いセット装備から探す
+                for (int i = 0; i < setEquips.Count; i++) {
+                    Dictionary<string, string> setEquip = new Dictionary<string, string>(setEquips[i]);
+
+                    string[] setAbility = setEquip["セット特殊効果"].Replace("、", ",").Split(new char[] { ',' });
+                    for (int j = 0; j < setAbility.Length; j++) {
+                        string[] abilityList = setAbility[j].Split(new char[] { '|' });
+                        for (int k = 0; k < abilityList.Length; k++) {
+                            if (abilityList[k].Contains("ガード")) {
+                                string kind = abilityList[k].Substring(0, (abilityList[k].IndexOf("ガード") + 3) - (abilityList[k].IndexOf(":") + 1));
+                                string grade = abilityList[k].Substring(abilityList[k].IndexOf("+") + 1, abilityList[k].Length - 1 - (abilityList[k].IndexOf("+") + 1)); // %を除外する
+                                float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
+                                if (!setEquip.ContainsKey(kind)) {
+                                    setEquip[kind] = "0";
+                                }
+                                setEquip[kind] = (float.Parse(setEquip[kind]) + nGrade).ToString();
+                            }
+                            else if (!abilityList[k].Contains("軽減") && abilityList[k].Contains("減")) {
+                                string kind = abilityList[k].Substring(0, (abilityList[k].IndexOf("ダメージ") + 4) - (abilityList[k].IndexOf(":") + 1));
+                                string grade = abilityList[k].Substring(abilityList[k].IndexOf("ダメージ") + 4, abilityList[k].Length - 2 - (abilityList[k].IndexOf("ダメージ") + 4)); // %減を除外する
+                                float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
+                                if (!setEquip.ContainsKey(kind)) {
+                                    setEquip[kind] = "0";
+                                }
+                                setEquip[kind] = (float.Parse(setEquip[kind]) + nGrade).ToString();
+                            }
+                        }
+                    }
+
+                    Dictionary<string, int> partsCheckList = new Dictionary<string, int>();
+                    for (int j = 0; j < bodyParts.Length; j++) {
+                        partsCheckList[bodyParts[j]] = 0;
+                    }
+                    bool haveSet = true;
+                    List<Dictionary<string, string>> haveSetList = new List<Dictionary<string, string>>();
+                    string[] needEquips = setEquip["必要装備"].Split(new char[] { ',' });
+                    for (int j = 0; j < needEquips.Length; j++) {
+                        Dictionary<string, string> equip = allEquips.Where(x => x["アイテム名"] == needEquips[j]).FirstOrDefault();
+                        partsCheckList[equip["分類"]] = 1;
+
+                        if (haveEquipList.Where(x => x["アイテム名"].Contains(needEquips[j])).Count() == 0) {
+                            haveSet = false;
+                        }
+                        else {
+                            haveSetList.AddRange(haveEquipList.Where(x => x["アイテム名"].Contains(needEquips[j])).ToList());
+                        }
+                    }
+                    if (haveSet) {
+                        displayEquipSet(user, bodyParts, appendParts, partsCheckList, allEquips, replaceParts, haveEquipList, haveSetList, targetRegistList, setEquip, orbRegistList);
+                    }
+                }
+            }
+            else {
+                Dictionary<string, int> partsCheckList = new Dictionary<string, int>();
+                for (int j = 0; j < bodyParts.Length; j++) {
+                    partsCheckList[bodyParts[j]] = 0;
+                }
+                List<Dictionary<string, string>> haveSetList = new List<Dictionary<string, string>>();
+
+                displayEquipSet(user, bodyParts, appendParts, partsCheckList, allEquips, replaceParts, haveEquipList, haveSetList, targetRegistList, null, orbRegistList);
+            }
+
+
+        }
+
+        private void displayEquipSet(string user, string[] bodyParts, string[] appendParts, Dictionary<string, int> partsCheckList, List<Dictionary<string, string>> allEquips, Dictionary<string, string> replaceParts, List<Dictionary<string, string>> haveEquipList, List<Dictionary<string, string>> haveSetList, Dictionary<string, float> targetRegistList, Dictionary<string, string> setEquip, Dictionary<string, float> orbRegistList) {
+            // セットに含まれていない装備を検索
+            List<Dictionary<string, string>> nonSetList = new List<Dictionary<string, string>>();
+            List<string> nonParts = partsCheckList.Where(x => x.Value == 0).Select(x => x.Key).ToList();
+            for (int j = 0; j < nonParts.Count; j++) {
+                nonSetList.AddRange(allEquips.Where(x => x["分類"] == replaceParts[nonParts[j]]).ToList());
+            }
+            nonSetList = nonSetList.OrderByDescending(x => x.ContainsKey("LV") ? int.Parse(x["LV"]) : 1).ToList();
+            for (int j = 0; j < nonSetList.Count; j++) {
+                if (appendParts.Select(x => replaceParts[x]).Contains(nonSetList[j]["分類"])) {
+                    haveSetList.AddRange(haveEquipList.Where(x => x["アイテム名"].Contains(nonSetList[j]["アイテム名"]) && (x["効果"].Contains("ガード") || x["効果"].Contains("減"))).ToList());
+                }
+                else {
+                    haveSetList.AddRange(haveEquipList.Where(x => x["アイテム名"].Contains(nonSetList[j]["アイテム名"])).ToList());
+                }
+            }
+
+            List<List<Dictionary<string, string>>> allCheckEquipList = new List<List<Dictionary<string, string>>>();
+            // 手持ちの装備がそろった
+
+            checkEquipList(haveSetList, bodyParts.ToList(), null, 0, ref allCheckEquipList);
+
+
+            //List<List<Dictionary<string, string>>> checkOkEquipList = new List<List<Dictionary<string, string>>>();
+            List<Dictionary<string, float>> registList = new List<Dictionary<string, float>>();
+
+            List<bool> checkList = new List<bool>();
+            for (int j = 0; j < allCheckEquipList.Count; j++) {
+                registList.Add(new Dictionary<string, float>());
+                List<Dictionary<string, string>> equipSet = allCheckEquipList[j];
+                Dictionary<string, float> prevTargetRegistList = new Dictionary<string, float>(targetRegistList);
+                for (int k = 0; k < equipSet.Count; k++) {
+                    Dictionary<string, string> equip = equipSet[k];
+                    foreach (string key in targetRegistList.Keys) {
+                        if (equip.ContainsKey(key)) {
+                            prevTargetRegistList[key] -= float.Parse(equip[key]);
+                        }
+                    }
+                    foreach (string key in equip.Keys.Where(x => x.Contains("ガード") || x.Contains("ダメージ"))) {
+                        if (!registList[j].ContainsKey(key)) {
+                            registList[j].Add(key, 0);
+                        }
+                        registList[j][key] += float.Parse(equip[key]);
+                    }
+
+                }
+                if(setEquip != null) {
+                    foreach (string key in setEquip.Keys.Where(x => x.Contains("ガード") || x.Contains("ダメージ"))) {
+                        if (!registList[j].ContainsKey(key)) {
+                            registList[j].Add(key, 0);
+                        }
+                        registList[j][key] += float.Parse(setEquip[key]);
+                    }
+                }
+
+                checkList.Add(true);
+                foreach (string key in prevTargetRegistList.Keys) {
+                    if (prevTargetRegistList[key] - orbRegistList[key] > 0) {
+                        checkList[j] = false;
+                    }
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            int index = 1;
+            for (int j = 0; j < checkList.Count; j++) {
+                if (checkList[j] == true) {
+                    sb.Append((index++) + "件目" + Environment.NewLine);
+                    for (int k = 0; k < allCheckEquipList[j].Count; k++) {
+                        sb.Append(user + "\t");
+                        sb.Append(allCheckEquipList[j][k]["アイテム名"] + "\t");
+                        sb.Append(allCheckEquipList[j][k]["分類"] + "\t");
+                        sb.Append(allCheckEquipList[j][k]["効果"] + "\t");
+                        sb.Append(Environment.NewLine);
+                    }
+                    sb.Append("　全体の耐性:");
+                    foreach (string key in registList[j].Keys) {
+                        string orbString = "";
+                        float orbNum = 0;
+                        if (orbRegistList.ContainsKey(key)) {
+                            orbNum = orbRegistList[key];
+                            if (orbNum > 0) {
+                                orbString = "(宝珠" + orbRegistList[key] + ")";
+                            }
+                        }
+                        sb.Append(key + (registList[j][key] + orbNum) + orbString + "% ");
+                    }
+                    sb.Append(Environment.NewLine);
+                    sb.Append(Environment.NewLine);
+                }
+            }
+            resultList.Items.Clear();
+            resultList.Items.AddRange(sb.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
+        }
+
+
+        private void checkEquipList(List<Dictionary<string, string>> haveSetList, List<string> bodyParts, List<Dictionary<string, string>> setEquipList, int index, ref List<List<Dictionary<string, string>>> allCheckEquipList) {
+            if(index >= bodyParts.Count) {
+                allCheckEquipList.Add(setEquipList);
+                return;
+            }
+
+            if(setEquipList == null) {
+                setEquipList = new List<Dictionary<string, string>>();
+            }
+            int prevIndex = index;
+            List<Dictionary<string, string>> prevList = new List<Dictionary<string, string>>(setEquipList);
+            string nowParts = bodyParts[index];
+            List<Dictionary<string, string>> partsList = haveSetList.Where(x => x["分類"] == nowParts).ToList();
+            for(int i = 0; i < partsList.Count; i++) {
+                index = prevIndex;
+                setEquipList = new List<Dictionary<string, string>>(prevList);
+                /*
+                if(setEquipList == null) {
+                    setEquipList = new List<Dictionary<string, string>>();
+                }
+                */
+                setEquipList.Add(partsList[i]);
+                checkEquipList(haveSetList, bodyParts, setEquipList, ++index, ref allCheckEquipList);
+            }
+            return;
+        }
+
+        private void button17_Click(object sender, EventArgs e) {
+            if (numericUpDown4.Value != 0) {
+                numericUpDown4.Value -= 1;
+            }
+            savePositionData();
+        }
+
+        private void button18_Click(object sender, EventArgs e) {
+            if (numericUpDown3.Value != 0) {
+                numericUpDown3.Value -= 1;
+            }
+            savePositionData();
+        }
+
+        private void button16_Click(object sender, EventArgs e) {
+            numericUpDown3.Value += 1;
+            savePositionData();
+        }
+
+        private void button15_Click(object sender, EventArgs e) {
+            numericUpDown4.Value += 1;
+            savePositionData();
         }
     }
 }

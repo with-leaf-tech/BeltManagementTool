@@ -70,6 +70,37 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.selectUser = new System.Windows.Forms.RadioButton();
             this.allUser = new System.Windows.Forms.RadioButton();
+            this.button13 = new System.Windows.Forms.Button();
+            this.jobList = new System.Windows.Forms.ListBox();
+            this.registBox0 = new System.Windows.Forms.ComboBox();
+            this.registBox1 = new System.Windows.Forms.ComboBox();
+            this.registBox2 = new System.Windows.Forms.ComboBox();
+            this.registBox3 = new System.Windows.Forms.ComboBox();
+            this.registBox4 = new System.Windows.Forms.ComboBox();
+            this.registBox5 = new System.Windows.Forms.ComboBox();
+            this.registBox6 = new System.Windows.Forms.ComboBox();
+            this.registBox7 = new System.Windows.Forms.ComboBox();
+            this.registBox8 = new System.Windows.Forms.ComboBox();
+            this.button14 = new System.Windows.Forms.Button();
+            this.includeShield = new System.Windows.Forms.CheckBox();
+            this.includeFace = new System.Windows.Forms.CheckBox();
+            this.includeFinger = new System.Windows.Forms.CheckBox();
+            this.includeWaist = new System.Windows.Forms.CheckBox();
+            this.includeOther = new System.Windows.Forms.CheckBox();
+            this.registAppend0 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend1 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend2 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend3 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend4 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend5 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend6 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend7 = new System.Windows.Forms.NumericUpDown();
+            this.registAppend8 = new System.Windows.Forms.NumericUpDown();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.onlySetEquip = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -81,6 +112,15 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend8)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -103,7 +143,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(32, 46);
+            this.button2.Location = new System.Drawing.Point(12, 46);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(20, 20);
             this.button2.TabIndex = 2;
@@ -113,7 +153,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(48, 28);
+            this.button3.Location = new System.Drawing.Point(32, 25);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(20, 20);
             this.button3.TabIndex = 3;
@@ -123,7 +163,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(58, 46);
+            this.button4.Location = new System.Drawing.Point(49, 46);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(20, 20);
             this.button4.TabIndex = 4;
@@ -133,7 +173,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(48, 72);
+            this.button5.Location = new System.Drawing.Point(32, 66);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(20, 20);
             this.button5.TabIndex = 5;
@@ -404,9 +444,9 @@
             this.groupBox2.Controls.Add(this.ocrRadioTesseract);
             this.groupBox2.Controls.Add(this.ocrRadioWindows);
             this.groupBox2.Controls.Add(this.ocrRadioGoogle);
-            this.groupBox2.Location = new System.Drawing.Point(410, 94);
+            this.groupBox2.Location = new System.Drawing.Point(6, 114);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(75, 122);
+            this.groupBox2.Size = new System.Drawing.Size(75, 102);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
             // 
@@ -451,7 +491,7 @@
             this.groupBox3.Controls.Add(this.positionSetting2);
             this.groupBox3.Controls.Add(this.positionSetting1);
             this.groupBox3.Controls.Add(this.positionSetting0);
-            this.groupBox3.Location = new System.Drawing.Point(410, 7);
+            this.groupBox3.Location = new System.Drawing.Point(410, 131);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(77, 85);
             this.groupBox3.TabIndex = 25;
@@ -496,10 +536,11 @@
             // resultList
             // 
             this.resultList.FormattingEnabled = true;
+            this.resultList.HorizontalScrollbar = true;
             this.resultList.ItemHeight = 12;
             this.resultList.Location = new System.Drawing.Point(209, 505);
             this.resultList.Name = "resultList";
-            this.resultList.Size = new System.Drawing.Size(592, 244);
+            this.resultList.Size = new System.Drawing.Size(971, 244);
             this.resultList.TabIndex = 26;
             this.resultList.DoubleClick += new System.EventHandler(this.resultList_DoubleClick);
             // 
@@ -591,11 +632,353 @@
             this.allUser.UseVisualStyleBackColor = true;
             this.allUser.CheckedChanged += new System.EventHandler(this.searchRadioChange);
             // 
+            // button13
+            // 
+            this.button13.Location = new System.Drawing.Point(878, 126);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(120, 23);
+            this.button13.TabIndex = 31;
+            this.button13.Text = "装備データダウンロード";
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // jobList
+            // 
+            this.jobList.FormattingEnabled = true;
+            this.jobList.ItemHeight = 12;
+            this.jobList.Location = new System.Drawing.Point(807, 235);
+            this.jobList.Name = "jobList";
+            this.jobList.Size = new System.Drawing.Size(63, 232);
+            this.jobList.TabIndex = 32;
+            // 
+            // registBox0
+            // 
+            this.registBox0.FormattingEnabled = true;
+            this.registBox0.Location = new System.Drawing.Point(877, 235);
+            this.registBox0.Name = "registBox0";
+            this.registBox0.Size = new System.Drawing.Size(121, 20);
+            this.registBox0.TabIndex = 33;
+            // 
+            // registBox1
+            // 
+            this.registBox1.FormattingEnabled = true;
+            this.registBox1.Location = new System.Drawing.Point(877, 261);
+            this.registBox1.Name = "registBox1";
+            this.registBox1.Size = new System.Drawing.Size(121, 20);
+            this.registBox1.TabIndex = 34;
+            // 
+            // registBox2
+            // 
+            this.registBox2.FormattingEnabled = true;
+            this.registBox2.Location = new System.Drawing.Point(877, 287);
+            this.registBox2.Name = "registBox2";
+            this.registBox2.Size = new System.Drawing.Size(121, 20);
+            this.registBox2.TabIndex = 35;
+            // 
+            // registBox3
+            // 
+            this.registBox3.FormattingEnabled = true;
+            this.registBox3.Location = new System.Drawing.Point(877, 313);
+            this.registBox3.Name = "registBox3";
+            this.registBox3.Size = new System.Drawing.Size(121, 20);
+            this.registBox3.TabIndex = 36;
+            // 
+            // registBox4
+            // 
+            this.registBox4.FormattingEnabled = true;
+            this.registBox4.Location = new System.Drawing.Point(876, 339);
+            this.registBox4.Name = "registBox4";
+            this.registBox4.Size = new System.Drawing.Size(121, 20);
+            this.registBox4.TabIndex = 37;
+            // 
+            // registBox5
+            // 
+            this.registBox5.FormattingEnabled = true;
+            this.registBox5.Location = new System.Drawing.Point(876, 365);
+            this.registBox5.Name = "registBox5";
+            this.registBox5.Size = new System.Drawing.Size(121, 20);
+            this.registBox5.TabIndex = 38;
+            // 
+            // registBox6
+            // 
+            this.registBox6.FormattingEnabled = true;
+            this.registBox6.Location = new System.Drawing.Point(877, 391);
+            this.registBox6.Name = "registBox6";
+            this.registBox6.Size = new System.Drawing.Size(121, 20);
+            this.registBox6.TabIndex = 39;
+            // 
+            // registBox7
+            // 
+            this.registBox7.FormattingEnabled = true;
+            this.registBox7.Location = new System.Drawing.Point(877, 417);
+            this.registBox7.Name = "registBox7";
+            this.registBox7.Size = new System.Drawing.Size(121, 20);
+            this.registBox7.TabIndex = 40;
+            // 
+            // registBox8
+            // 
+            this.registBox8.FormattingEnabled = true;
+            this.registBox8.Location = new System.Drawing.Point(876, 443);
+            this.registBox8.Name = "registBox8";
+            this.registBox8.Size = new System.Drawing.Size(121, 20);
+            this.registBox8.TabIndex = 41;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(877, 206);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(120, 23);
+            this.button14.TabIndex = 42;
+            this.button14.Text = "耐性検索";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // includeShield
+            // 
+            this.includeShield.AutoSize = true;
+            this.includeShield.Location = new System.Drawing.Point(1050, 235);
+            this.includeShield.Name = "includeShield";
+            this.includeShield.Size = new System.Drawing.Size(76, 16);
+            this.includeShield.TabIndex = 43;
+            this.includeShield.Text = "盾を含める";
+            this.includeShield.UseVisualStyleBackColor = true;
+            // 
+            // includeFace
+            // 
+            this.includeFace.AutoSize = true;
+            this.includeFace.Location = new System.Drawing.Point(1050, 257);
+            this.includeFace.Name = "includeFace";
+            this.includeFace.Size = new System.Drawing.Size(130, 16);
+            this.includeFace.TabIndex = 44;
+            this.includeFace.Text = "顔アクセサリーを含める";
+            this.includeFace.UseVisualStyleBackColor = true;
+            // 
+            // includeFinger
+            // 
+            this.includeFinger.AutoSize = true;
+            this.includeFinger.Location = new System.Drawing.Point(1050, 280);
+            this.includeFinger.Name = "includeFinger";
+            this.includeFinger.Size = new System.Drawing.Size(130, 16);
+            this.includeFinger.TabIndex = 45;
+            this.includeFinger.Text = "指アクセサリーを含める";
+            this.includeFinger.UseVisualStyleBackColor = true;
+            // 
+            // includeWaist
+            // 
+            this.includeWaist.AutoSize = true;
+            this.includeWaist.Location = new System.Drawing.Point(1050, 302);
+            this.includeWaist.Name = "includeWaist";
+            this.includeWaist.Size = new System.Drawing.Size(130, 16);
+            this.includeWaist.TabIndex = 46;
+            this.includeWaist.Text = "腰アクセサリーを含める";
+            this.includeWaist.UseVisualStyleBackColor = true;
+            // 
+            // includeOther
+            // 
+            this.includeOther.AutoSize = true;
+            this.includeOther.Location = new System.Drawing.Point(1050, 324);
+            this.includeOther.Name = "includeOther";
+            this.includeOther.Size = new System.Drawing.Size(130, 16);
+            this.includeOther.TabIndex = 47;
+            this.includeOther.Text = "他アクセサリーを含める";
+            this.includeOther.UseVisualStyleBackColor = true;
+            // 
+            // registAppend0
+            // 
+            this.registAppend0.Location = new System.Drawing.Point(1005, 235);
+            this.registAppend0.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend0.Name = "registAppend0";
+            this.registAppend0.Size = new System.Drawing.Size(39, 19);
+            this.registAppend0.TabIndex = 48;
+            // 
+            // registAppend1
+            // 
+            this.registAppend1.Location = new System.Drawing.Point(1005, 261);
+            this.registAppend1.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend1.Name = "registAppend1";
+            this.registAppend1.Size = new System.Drawing.Size(39, 19);
+            this.registAppend1.TabIndex = 49;
+            // 
+            // registAppend2
+            // 
+            this.registAppend2.Location = new System.Drawing.Point(1004, 287);
+            this.registAppend2.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend2.Name = "registAppend2";
+            this.registAppend2.Size = new System.Drawing.Size(39, 19);
+            this.registAppend2.TabIndex = 50;
+            // 
+            // registAppend3
+            // 
+            this.registAppend3.Location = new System.Drawing.Point(1005, 313);
+            this.registAppend3.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend3.Name = "registAppend3";
+            this.registAppend3.Size = new System.Drawing.Size(39, 19);
+            this.registAppend3.TabIndex = 51;
+            // 
+            // registAppend4
+            // 
+            this.registAppend4.Location = new System.Drawing.Point(1004, 338);
+            this.registAppend4.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend4.Name = "registAppend4";
+            this.registAppend4.Size = new System.Drawing.Size(39, 19);
+            this.registAppend4.TabIndex = 52;
+            // 
+            // registAppend5
+            // 
+            this.registAppend5.Location = new System.Drawing.Point(1005, 365);
+            this.registAppend5.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend5.Name = "registAppend5";
+            this.registAppend5.Size = new System.Drawing.Size(39, 19);
+            this.registAppend5.TabIndex = 53;
+            // 
+            // registAppend6
+            // 
+            this.registAppend6.Location = new System.Drawing.Point(1004, 392);
+            this.registAppend6.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend6.Name = "registAppend6";
+            this.registAppend6.Size = new System.Drawing.Size(39, 19);
+            this.registAppend6.TabIndex = 54;
+            // 
+            // registAppend7
+            // 
+            this.registAppend7.Location = new System.Drawing.Point(1004, 417);
+            this.registAppend7.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend7.Name = "registAppend7";
+            this.registAppend7.Size = new System.Drawing.Size(39, 19);
+            this.registAppend7.TabIndex = 55;
+            // 
+            // registAppend8
+            // 
+            this.registAppend8.Location = new System.Drawing.Point(1004, 442);
+            this.registAppend8.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.registAppend8.Name = "registAppend8";
+            this.registAppend8.Size = new System.Drawing.Size(39, 19);
+            this.registAppend8.TabIndex = 56;
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(431, 66);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(20, 20);
+            this.button15.TabIndex = 60;
+            this.button15.Text = "↓";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(448, 46);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(20, 20);
+            this.button16.TabIndex = 59;
+            this.button16.Text = "→";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(431, 25);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(20, 20);
+            this.button17.TabIndex = 58;
+            this.button17.Text = "↑";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(411, 46);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(20, 20);
+            this.button18.TabIndex = 57;
+            this.button18.Text = "←";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // onlySetEquip
+            // 
+            this.onlySetEquip.AutoSize = true;
+            this.onlySetEquip.Checked = true;
+            this.onlySetEquip.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.onlySetEquip.Location = new System.Drawing.Point(1004, 212);
+            this.onlySetEquip.Name = "onlySetEquip";
+            this.onlySetEquip.Size = new System.Drawing.Size(125, 16);
+            this.onlySetEquip.TabIndex = 61;
+            this.onlySetEquip.Text = "セット装備に限定する";
+            this.onlySetEquip.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 773);
+            this.ClientSize = new System.Drawing.Size(1199, 773);
+            this.Controls.Add(this.onlySetEquip);
+            this.Controls.Add(this.button15);
+            this.Controls.Add(this.button16);
+            this.Controls.Add(this.button17);
+            this.Controls.Add(this.button18);
+            this.Controls.Add(this.registAppend8);
+            this.Controls.Add(this.registAppend7);
+            this.Controls.Add(this.registAppend6);
+            this.Controls.Add(this.registAppend5);
+            this.Controls.Add(this.registAppend4);
+            this.Controls.Add(this.registAppend3);
+            this.Controls.Add(this.registAppend2);
+            this.Controls.Add(this.registAppend1);
+            this.Controls.Add(this.registAppend0);
+            this.Controls.Add(this.includeOther);
+            this.Controls.Add(this.includeWaist);
+            this.Controls.Add(this.includeFinger);
+            this.Controls.Add(this.includeFace);
+            this.Controls.Add(this.includeShield);
+            this.Controls.Add(this.button14);
+            this.Controls.Add(this.registBox8);
+            this.Controls.Add(this.registBox7);
+            this.Controls.Add(this.registBox6);
+            this.Controls.Add(this.registBox5);
+            this.Controls.Add(this.registBox4);
+            this.Controls.Add(this.registBox3);
+            this.Controls.Add(this.registBox2);
+            this.Controls.Add(this.registBox1);
+            this.Controls.Add(this.registBox0);
+            this.Controls.Add(this.jobList);
+            this.Controls.Add(this.button13);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.abilityList);
@@ -646,6 +1029,15 @@
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.registAppend8)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -699,6 +1091,37 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton selectUser;
         private System.Windows.Forms.RadioButton allUser;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.ListBox jobList;
+        private System.Windows.Forms.ComboBox registBox0;
+        private System.Windows.Forms.ComboBox registBox1;
+        private System.Windows.Forms.ComboBox registBox2;
+        private System.Windows.Forms.ComboBox registBox3;
+        private System.Windows.Forms.ComboBox registBox4;
+        private System.Windows.Forms.ComboBox registBox5;
+        private System.Windows.Forms.ComboBox registBox6;
+        private System.Windows.Forms.ComboBox registBox7;
+        private System.Windows.Forms.ComboBox registBox8;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.CheckBox includeShield;
+        private System.Windows.Forms.CheckBox includeFace;
+        private System.Windows.Forms.CheckBox includeFinger;
+        private System.Windows.Forms.CheckBox includeWaist;
+        private System.Windows.Forms.CheckBox includeOther;
+        private System.Windows.Forms.NumericUpDown registAppend0;
+        private System.Windows.Forms.NumericUpDown registAppend1;
+        private System.Windows.Forms.NumericUpDown registAppend2;
+        private System.Windows.Forms.NumericUpDown registAppend3;
+        private System.Windows.Forms.NumericUpDown registAppend4;
+        private System.Windows.Forms.NumericUpDown registAppend5;
+        private System.Windows.Forms.NumericUpDown registAppend6;
+        private System.Windows.Forms.NumericUpDown registAppend7;
+        private System.Windows.Forms.NumericUpDown registAppend8;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.CheckBox onlySetEquip;
     }
 }
 

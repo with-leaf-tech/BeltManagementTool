@@ -62,9 +62,35 @@ namespace BeltManagementTool {
             StringBuilder sb = new StringBuilder();
             if (_name.Length > 0) {
                 saveFile = _user + _equipDataFile;
-                sb.Append(_name + "\t");
-                sb.Append(_parts + "\t");
-                sb.Append(string.Join(" ", _detailList));
+                //sb.Append(_name + "\t");
+                //sb.Append(_parts + "\t");
+                //sb.Append(string.Join(" ", _detailList));
+
+                string[] updateText = textBox1.Text.Replace("\r\n", "\n").Split(new char[] { '\n' });
+                for (int i = 0; i < updateText.Length; i++) {
+                    //if(updateText[i].Contains("ユーザー:")) {
+                    //    updateSb.Append(updateText[i].Replace("ユーザー:", "") + "\t");
+                    //}
+                    if (updateText[i].Contains("名前:")) {
+                        sb.Append(updateText[i].Replace("名前:", "") + "\t");
+                    }
+                    if (updateText[i].Contains("部位:")) {
+                        sb.Append(updateText[i].Replace("部位:", "") + "\t");
+                    }
+                    if (updateText[i].Contains("詳細:")) {
+                        for (int j = i + 1; j < updateText.Length; j++) {
+                            if (updateText[j].Length > 0) {
+                                if (j != i + 1) {
+                                    sb.Append(" ");
+                                }
+                                sb.Append(updateText[j]);
+                            }
+                        }
+                    }
+                }
+
+
+
 
                 if (checkBox1.Checked) {
                     if (File.Exists(saveFile)) {
