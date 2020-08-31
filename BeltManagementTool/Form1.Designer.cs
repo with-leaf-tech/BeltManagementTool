@@ -101,6 +101,7 @@
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.onlySetEquip = new System.Windows.Forms.CheckBox();
+            this.ocrRadioAzure = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -441,12 +442,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.ocrRadioAzure);
             this.groupBox2.Controls.Add(this.ocrRadioTesseract);
             this.groupBox2.Controls.Add(this.ocrRadioWindows);
             this.groupBox2.Controls.Add(this.ocrRadioGoogle);
-            this.groupBox2.Location = new System.Drawing.Point(6, 114);
+            this.groupBox2.Location = new System.Drawing.Point(6, 92);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(75, 102);
+            this.groupBox2.Size = new System.Drawing.Size(75, 124);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
             // 
@@ -943,6 +945,18 @@
             this.onlySetEquip.Text = "セット装備に限定する";
             this.onlySetEquip.UseVisualStyleBackColor = true;
             // 
+            // ocrRadioAzure
+            // 
+            this.ocrRadioAzure.AutoSize = true;
+            this.ocrRadioAzure.Location = new System.Drawing.Point(3, 91);
+            this.ocrRadioAzure.Name = "ocrRadioAzure";
+            this.ocrRadioAzure.Size = new System.Drawing.Size(52, 16);
+            this.ocrRadioAzure.TabIndex = 3;
+            this.ocrRadioAzure.TabStop = true;
+            this.ocrRadioAzure.Text = "Azure";
+            this.ocrRadioAzure.UseVisualStyleBackColor = true;
+            this.ocrRadioAzure.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1122,6 +1136,7 @@
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.CheckBox onlySetEquip;
+        private System.Windows.Forms.RadioButton ocrRadioAzure;
     }
 }
 

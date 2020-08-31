@@ -29,6 +29,7 @@ namespace BeltManagementTool {
         GoogleVisionApiOCR googleOcr = null;
         WindowsOCR windowsOcr = null;
         TesseractOCR tesseractOcr = null;
+        AzureComputerVisionApiOCR azureOcr = null;
         OcrBase ocr = null;
 
         string settingFileName = "setting.txt";
@@ -113,6 +114,8 @@ namespace BeltManagementTool {
             googleOcr = new GoogleVisionApiOCR();
             googleOcr.initialize(@"C:\Users\tsutsumi\Downloads\try-apis-8b2095f28b0e.json");
             windowsOcr = new WindowsOCR();
+            azureOcr = new AzureComputerVisionApiOCR();
+            await Task.Run(() => azureOcr.initialize(@"C:\Users\tsutsumi\Downloads\azure.txt"));
 
             await Task.Run(() => windowsOcr.initialize(""));
             tesseractOcr = new TesseractOCR();
@@ -161,7 +164,7 @@ namespace BeltManagementTool {
 
         private async void button1_Click(object sender, EventArgs e) {
             screenCapture();
-            if(ocrRadioWindows.Checked) {
+            if(ocrRadioWindows.Checked || ocrRadioAzure.Checked) {
                 await Task.Run(() => GetOCRTest());
             }
             else {
@@ -637,6 +640,9 @@ O装備できる仲間モンスターを見る
             }
             else if(ocrRadioTesseract.Checked) {
                 ocr = tesseractOcr;
+            }
+            else if (ocrRadioAzure.Checked) {
+                ocr = azureOcr;
             }
             else {
                 ocr = windowsOcr;
