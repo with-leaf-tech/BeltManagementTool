@@ -41,12 +41,15 @@ namespace BeltManagementTool {
         private string _equipDataFile = "_equip.txt";
         private string _itemDicFile = "itemDictionary.txt";
         
-        string[] equips = new string[] { "鎌", "両手杖", "アタマ", "からだ上", "からだ下", "ウデ", "足", "顔", "首", "指", "胸", "腰", "札", "その他", "紋章", "証" };
+        string[] equips = new string[] { "片手剣", "両手剣", "短剣", "ヤリ", "オノ", "ツメ", "ムチ", "スティック", "杖", "棍", "扇", "ハンマー", "弓", "ブーメラン", "鎌", "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "顔", "首", "指", "胸", "腰", "札", "その他", "紋章", "証" };
         string[] jobs = new string[] { "戦士", "僧侶", "魔使", "武闘", "盗賊", "旅芸", "バト", "パラ", "魔戦", "レン", "賢者", "スパ", "まも", "どう", "踊り", "占い", "天地", "遊び", "デス" };
         string[] regists = new string[] { "呪いガード", "即死ガード", "闇ダメージ" };
 
+        string[] registParts = new string[] {           "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "アクセサリー（顔）", "アクセサリー（首）", "アクセサリー（指）", "アクセサリー（胸）", "アクセサリー（腰）", "アクセサリー（札）", "アクセサリー（他）", "アクセサリー（証）", "アクセサリー（紋章）" };
+        string[] registInternalParts = new string[] {   "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "顔", "首", "指", "胸", "腰", "札", "その他", "証", "紋章" };
 
         List<Dictionary<string, string>> itemDictionary = new List<Dictionary<string, string>>();
+        Dictionary<string, string> replaceParts = new Dictionary<string, string>();
 
 
         Dictionary<string, string> replaceWordDic = new Dictionary<string, string>();
@@ -105,6 +108,10 @@ namespace BeltManagementTool {
                 }
                 ((System.Windows.Forms.ComboBox)comboBox[0]).Items.AddRange(items.ToArray());
                 ((System.Windows.Forms.ComboBox)comboBox[0]).SelectedIndex = 0;
+            }
+
+            for (int i = 0; i < registParts.Length; i++) {
+                replaceParts[registInternalParts[i]] = registParts[i];
             }
 
             initialize();
@@ -331,7 +338,7 @@ namespace BeltManagementTool {
                 }
             }
             else {
-                string[] namehead = new string[] { "EO", "ED", "EE", "の", "N回", "E回", "回", "囚", "图", "NO", "NG", "NE", "v3", "①", "②", "D", "E", "S", "N", "O", "@", "3", "2" };
+                string[] namehead = new string[] { "EO", "ED", "EE", "NB", "の", "○", "N回", "E回", "回", "囚", "图", "四", "E图", "NO", "NG", "NE", "v3", "①", "②", "D", "E", "S", "N", "O", "B", "@", "3", "2" };
                 string[] parts = text.Replace(" ", "").Replace("\r\n", "\n").Split(new char[] { '\n' });
                 List<string> remainList = new List<string>();
                 bool remainStart = false;
@@ -433,7 +440,7 @@ namespace BeltManagementTool {
                 if (name.Length == 0) {
                     name = tempName.Replace(" ", "");
                 }
-                if(name.Length > 0) {
+                if (name.Length > 0) {
                     for (int i = 0; i < namehead.Length; i++) {
                         if (name.Substring(0, namehead[i].Length) == namehead[i]) {
                             name = name.Substring(namehead[i].Length);
@@ -475,6 +482,12 @@ namespace BeltManagementTool {
                             .Replace("ダメージ88", "ダメージ+8%")
                             .Replace("ダメージ98", "ダメージ+9%");
                     }
+                }
+            }
+
+            for (int i = 0; i < detailList.Count; i++) {
+                foreach (string key in replaceWordDic.Keys) {
+                    detailList[i] = detailList[i].Replace(key, replaceWordDic[key]);
                 }
             }
         }
@@ -1053,8 +1066,6 @@ O装備できる仲間モンスターを見る
                 }
             }
 
-            string[] registParts = new string[] { "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "アクセサリー（顔）", "アクセサリー（指）", "アクセサリー（腰）", "アクセサリー（他）" };
-            string[] registInternalParts = new string[] { "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾", "顔", "指", "腰", "その他" };
             string[] bodyParts = new string[] { "アタマ", "からだ上", "からだ下", "足" };
             string[] appendParts = new string[] { };
             if(includeFace.Checked) {
@@ -1086,11 +1097,6 @@ O装備できる仲間モンスターを見る
                 bodyParts[bodyParts.Length - 1] = "腰";
                 Array.Resize(ref appendParts, appendParts.Length + 1);
                 appendParts[appendParts.Length - 1] = "腰";
-            }
-
-            Dictionary<string, string> replaceParts = new Dictionary<string, string>();
-            for(int i = 0; i < registParts.Length; i++) {
-                replaceParts[registInternalParts[i]] = registParts[i];
             }
 
             List<Dictionary<string, string>> haveEquipList = new List<Dictionary<string, string>>();
@@ -1344,5 +1350,213 @@ O装備できる仲間モンスターを見る
             numericUpDown4.Value += 1;
             savePositionData();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+            if(((CheckBox)sender).Checked) {
+                ocr.option = "True";
+            }
+            else {
+                ocr.option = "";
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e) {
+            (string abName, int table)[] validAbilityTable = new (string, int)[] {
+                ("こうげき魔力+(num)",0),
+                ("こうげき力+(num)",1),
+                ("かいしん率+(num)",2),
+                ("開戦時(num)で会心率上昇",3),
+                ("かいふく魔力+(num)",0),
+                ("呪文発動速度+(num)",4),
+                ("盾ガード率+(num)",2),
+                ("開戦時(num)で盾ガード率上昇",3),
+                ("武器ガード率+(num)",5),
+                ("ブレス系ダメージ(num)減",6),
+                ("しゅび力+(num)",1),
+                ("開戦時(num)でスカラ",3),
+                ("攻撃呪文ダメージ(num)減",7),
+                ("炎ダメージ(num)減",8),
+                ("氷ダメージ(num)減",8),
+                ("風ダメージ(num)減",8),
+                ("雷ダメージ(num)減",8),
+                ("土ダメージ(num)減",8),
+                ("闇ダメージ(num)減",8),
+                ("光ダメージ(num)減",8),
+                ("呪文ぼうそう率+(num)",9),
+                ("さいだいHP+(num)",10),
+                ("さいだいMP+(num)",0),
+                ("開戦時(num)でピオラ",3),
+                ("MP消費しない率+(num)",11),
+                ("MP吸収率+(num)",2),
+                ("MP吸収ガード+(num)",12),
+                ("きようさ+(num)",0),
+                ("通常ドロップ率(num)",13),
+                ("レアドロップ率(num)",13),
+                ("すばやさ+(num)",0),
+                ("身かわし率+(num)",2),
+                ("不意をつく確率+(num)",14),
+                ("移動速度+(num)",15),
+                ("おもさ+(num)",16),
+                ("攻撃時(num)で眠り",17),
+                ("攻撃時(num)でヘナトス",17),
+                ("攻撃時(num)でルカニ",17),
+                ("攻撃時(num)でどく",14),
+                ("攻撃時(num)でマヒ",14),
+                ("攻撃時(num)で混乱",14),
+                ("攻撃時(num)で幻惑",14),
+                ("攻撃時(num)で魅了",14),
+                ("攻撃時(num)でマホトーン",14),
+                ("攻撃時(num)で封印",14),
+                ("攻撃時(num)でマホ系解除",18),
+                ("攻撃時(num)でリホ系解除",18),
+                ("おしゃれさ+(num)",21),
+                ("混乱ガード+(num)",12),
+                ("幻惑ガード+(num)",12),
+                ("おびえガード+(num)",19),
+                ("踊らされガード+(num)",19),
+                ("眠りガード+(num)",12),
+                ("マヒガード+(num)",12),
+                ("封印ガード+(num)",12),
+                ("呪いガード+(num)",12),
+                ("即死ガード+(num)",12),
+                ("転びガード+(num)",19),
+                ("しばりガード+(num)",19),
+                ("どくガード+(num)",20),
+                ("開戦時(num)でマホキテ",3),
+            };
+
+            Dictionary<int, string[]> abilityTable = new Dictionary<int, string[]>();
+            abilityTable[0] = (new string[] { "5", "5(+2)", "5(+3)", "5(-4)", "10", "10(+2)", "10(+3)", "10(-8)", "15", "15(+1)", "15(+2)", "15(+3)", "15(-12)" });
+            abilityTable[1] = (new string[] { "2", "2(+1)", "2(+3)", "2(-1)", "4", "4(+1)", "4(+2)", "4(+3)", "4(-2)", "6", "6(+1)", "6(+2)", "6(+3)", "6(-3)" });
+            abilityTable[2] = (new string[] { "1.0%", "1.0(+0.2)%", "1.0(-0.8)%", "1.2%", "1.2(+0.2)%", "1.2(-0.8)%", "1.4%", "1.4(+0.2)%", "1.4(+0.3)%", "1.4(-0.8)%" });
+            abilityTable[3] = (new string[] { "3%", "3(+2)%", "6%", "6(+2)%", "10%", "10(+2)%" });
+            abilityTable[4] = (new string[] { "2%", "2(+1)%", "2(-1)%", "4%", "4(+1)%", "4(-3)%", "6%", "6(+1)%", "6(-5)%" });
+            abilityTable[5] = (new string[] { "1%", "1(+0.2)%", "1.2%", "1.2(+0.2)%", "1.4%", "1.4(+0.3)%" });
+            abilityTable[6] = (new string[] { "6%", "6(+2)%", "6(-5)%", "10%", "10(+2)%", "10(+3)%", "10(+4)%", "10(-9)%" });
+            abilityTable[7] = (new string[] { "3%", "3(+1)%", "3(-2)%", "5%", "5(+1)%", "5(-4)%", "7%", "7(+1)%", "7(-6)%" });
+            abilityTable[8] = (new string[] { "6%", "6(+2)%", "10%", "10(+4)%", "14%", "14(+4)%" });
+            abilityTable[9] = (new string[] { "1%", "1(+0.1)", "1(0.2)%", "1(-0.5)%", "1.2%", "1.2(+0.1)", "1.2(0.2)%", "1.2(-0.7)%", "1.4%", "1.4(+0.2)", "1.4(0.3)%", "1.4(-0.9)%" });
+            abilityTable[10] = (new string[] { "3", "3(+2)", "3(+4)", "3(-2)", "5", "5(+2)", "5(+3)", "5(+4)", "5(-3)", "7", "7(+1)", "7(+2)", "7(+3)", "7(-4)" });
+            abilityTable[11] = (new string[] { "2%", "2(+0.5)%", "2(+1)%", "2(+2)%", "2(-1.8)%", "4%", "4(+0.5)%", "4(+1)%", "4(+2)%", "4(-3.6)%", "5%", "5(+0.5)%", "5(+1)%", "5(+2)%", "5(-4.4)%" });
+            abilityTable[12] = (new string[] { "20%", "20(+2)%", "20(+4)%", "20(+6)%", "20(+8)%", "20(+10)%", "20(-15)%", "40%", "40(+2)%", "40(+4)%", "40(+6)%", "40(+8)%", "40(+10)%", "40(-30)%", "60%", "60(+2)%", "60(+4)%", "60(+6)%", "60(+8)%", "60(+10)%", "60(-45)%" });
+            abilityTable[13] = (new string[] { "1.2倍", "1.2倍(+0.4倍)", "1.4倍", "1.4倍(+0.4倍)", "1.5倍", "1.5倍(+0.4倍)" });
+            abilityTable[14] = (new string[] { "2%", "2(+1)%", "3%", "3(+1)%", "4%", "4(+1)%" });
+            abilityTable[15] = (new string[] { "1.0%", "1.0(+1)%", "2.0%", "2.0(+1)%", "3.0%", "3.0(+1)%" });
+            abilityTable[16] = (new string[] { "5", "5(+2)", "5(+3)", "5(-4)", "10", "10(+2)", "10(+3)", "10(-7)", "15", "15(+1)", "15(+2)", "15(+3)", "15(-10)" });
+            abilityTable[17] = (new string[] { "2%", "2(+1)%", "2(-1)%", "3%", "3(+1)%", "3(-2)%", "4%", "4(+1)%", "4(-3)%" });
+            abilityTable[18] = (new string[] { "10%", "10(+4)%", "20%", "20(+4)%", "30%", "30(+4)%" });
+            abilityTable[19] = (new string[] { "30%", "30(+2)%", "30(+4)%", "30(+6)%", "30(+8)%", "30(+10)%", "30(-27)%", "60%", "60(+2)%", "60(+4)%", "60(+6)%", "60(+8)%", "60(+10)%", "60(-54)%", "90%", "90(+2)%", "90(+4)%", "90(+6)%", "90(+8)%", "90(+10)%", "90(-81)%" });
+            abilityTable[20] = (new string[] { "20%", "20(+10)%", "40%", "40(+10)%", "60%", "60(+10)%" });
+            abilityTable[21] = (new string[] { "5", "5(+2)", "5(+3)", "5(-4)", "10", "10(+2)", "10(+3)", "10(-9)", "15", "15(+1)", "15(+2)", "15(+3)", "15(-14)" });
+
+            List<string> allAbility = new List<string>();
+            string[][] allAbilityList = validAbilityTable.Select(x => abilityTable[x.table].Select(y => x.abName.Replace("(num)", y)).ToArray()).ToArray();
+            for(int i = 0; i < allAbilityList.Length; i++) {
+                allAbility.AddRange(allAbilityList[i]);
+            }
+
+
+
+            string[] data = File.ReadAllLines(listBox1.SelectedItem + _equipDataFile);
+            List<string> names = data.Select(x => (x.Split(new char[] { '\t' })[0])).ToList();
+            List<string> parts = data.Select(x => (x.Split(new char[] { '\t' })[1])).ToList();
+            List<string[]> abilitys = data.Select(x => (x.Split(new char[] { '\t' })[2]).Split(new char[] { ' ' })).ToList();
+
+            StringBuilder nameSb = new StringBuilder();
+            StringBuilder plusSb = new StringBuilder();
+            StringBuilder partSb = new StringBuilder();
+            StringBuilder abilitySb = new StringBuilder();
+            StringBuilder allSb = new StringBuilder();
+            for (int i = 0; i < names.Count; i++) {
+                string itemName = names[i];
+                string plus = "0";
+                int iPlus = -1;
+                if (names[i].IndexOf("+") > 0) {
+                    itemName = names[i].Substring(0, names[i].IndexOf("+"));
+                    plus = names[i].Substring(names[i].IndexOf("+") + 1, 1);
+                }
+                if (itemDictionary.Where(x => x.ContainsKey("アイテム名") && x["アイテム名"] == itemName).Count() == 0) {
+                    // 名前が違う
+                    nameSb.Append(listBox1.SelectedItem + "\t" + data[i] + Environment.NewLine);
+                    continue;
+                }
+                if(!int.TryParse(plus, out iPlus)) {
+                    // プラス値が違う
+                    plusSb.Append(listBox1.SelectedItem + "\t" + data[i] + Environment.NewLine);
+                    continue;
+                }
+                Dictionary<string, string> item = itemDictionary.Where(x => x.ContainsKey("アイテム名") && x["アイテム名"] == itemName).First();
+                if(item["分類"] != (replaceParts.ContainsKey(parts[i]) ? replaceParts[parts[i]] : parts[i])) {
+                    // 分類が違う
+                    partSb.Append(listBox1.SelectedItem + "\t" + data[i] + Environment.NewLine);
+                    continue;
+                }
+                bool abilityOk = true;
+                string[] debug = new string[] { "アタマ", "からだ上", "からだ下", "ウデ", "足", "盾" };
+
+                if(debug.Contains(item["分類"])) {
+                    string[] ability = abilitys[i];
+                    for (int j = 0; j < ability.Length; j++) {
+                        string[] abilityParts = ability[j].Split(new char[] { ':' });
+                        if (abilityParts.Length > 1 && abilityParts[0] != "基礎" && !allAbility.Contains(abilityParts[abilityParts.Length - 1])) {
+                            List<string> aa = getNearlyString(ability[j], allAbility);
+                            abilityOk = false;
+                        }
+                    }
+                }
+                if (!abilityOk) {
+                    // 効果が違う
+                    abilitySb.Append(listBox1.SelectedItem + "\t" + data[i] + Environment.NewLine);
+                    continue;
+                }
+            }
+
+            if(nameSb.Length > 0) {
+                allSb.Append("--名前違い--" + Environment.NewLine);
+                allSb.Append(nameSb.ToString());
+                allSb.Append(Environment.NewLine);
+            }
+            if (nameSb.Length > 0) {
+                allSb.Append("--プラス値違い--" + Environment.NewLine);
+                allSb.Append(plusSb.ToString());
+                allSb.Append(Environment.NewLine);
+            }
+            if (partSb.Length > 0) {
+                allSb.Append("--分類違い--" + Environment.NewLine);
+                allSb.Append(partSb.ToString());
+                allSb.Append(Environment.NewLine);
+            }
+            if (abilitySb.Length > 0) {
+                allSb.Append("--効果違い--" + Environment.NewLine);
+                allSb.Append(abilitySb.ToString());
+                allSb.Append(Environment.NewLine);
+            }
+
+            resultList.Items.Clear();
+            resultList.Items.AddRange(allSb.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
+
+        }
+
+        private string[] getAbilityCollection(string ability, string[] param) {
+            return param.Select(x => ability.Replace("(num)", x)).ToArray();
+
+        }
+
+        private List<string> getNearlyString(string source, List<string> candidacyData) {
+            List<string> topList = new List<string>();
+            List<int> hitList = new List<int>(candidacyData.Select(x => 0).ToArray());
+            for(int i = 0; i < source.Length - 1; i++) {
+                string part = source.Substring(i, 1);
+                int[] tempHitList = candidacyData.Select(x => x.Contains(part) ? 1 : 0).ToArray();
+                hitList = hitList.Select((x, j) => x + tempHitList[j]).ToList();
+            }
+            int topScore = hitList.Max();
+            var topIndex = hitList.Select((x, i) => new int[] { x, i }).Where(x => x[0] == topScore).Select(x => x[1]).ToArray();
+            topList = topIndex.Select(x => candidacyData[x]).ToList();
+
+            return topList;
+        }
+
+
     }
 }

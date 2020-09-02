@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace BeltManagementTool.OCR {
     abstract public class OcrBase {
 
+        public string option = "";
+
         public virtual void initialize(string accessKey) {
         }
 

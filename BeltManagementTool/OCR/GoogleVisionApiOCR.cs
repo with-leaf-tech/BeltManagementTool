@@ -46,7 +46,8 @@ namespace BeltManagementTool.OCR {
                             Features = new []
                             { new Feature()
                               {
-                                Type = "TEXT_DETECTION"
+                                //Type = "TEXT_DETECTION"
+                                Type = option.Length == 0 ? "TEXT_DETECTION" : "DOCUMENT_TEXT_DETECTION"
                               }
                             },
                             Image = new Google.Apis.Vision.v1.Data.Image()

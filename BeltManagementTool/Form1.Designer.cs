@@ -54,6 +54,7 @@
             this.logTextBox2 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ocrRadioAzure = new System.Windows.Forms.RadioButton();
             this.ocrRadioTesseract = new System.Windows.Forms.RadioButton();
             this.ocrRadioWindows = new System.Windows.Forms.RadioButton();
             this.ocrRadioGoogle = new System.Windows.Forms.RadioButton();
@@ -101,7 +102,8 @@
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.onlySetEquip = new System.Windows.Forms.CheckBox();
-            this.ocrRadioAzure = new System.Windows.Forms.RadioButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button19 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -134,7 +136,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(506, 36);
+            this.button1.Location = new System.Drawing.Point(499, 36);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -350,7 +352,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(506, 2);
+            this.button8.Location = new System.Drawing.Point(499, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 14;
@@ -451,6 +453,18 @@
             this.groupBox2.Size = new System.Drawing.Size(75, 124);
             this.groupBox2.TabIndex = 24;
             this.groupBox2.TabStop = false;
+            // 
+            // ocrRadioAzure
+            // 
+            this.ocrRadioAzure.AutoSize = true;
+            this.ocrRadioAzure.Location = new System.Drawing.Point(3, 91);
+            this.ocrRadioAzure.Name = "ocrRadioAzure";
+            this.ocrRadioAzure.Size = new System.Drawing.Size(52, 16);
+            this.ocrRadioAzure.TabIndex = 3;
+            this.ocrRadioAzure.TabStop = true;
+            this.ocrRadioAzure.Text = "Azure";
+            this.ocrRadioAzure.UseVisualStyleBackColor = true;
+            this.ocrRadioAzure.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
             // 
             // ocrRadioTesseract
             // 
@@ -636,7 +650,7 @@
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(878, 126);
+            this.button13.Location = new System.Drawing.Point(876, 2);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(120, 23);
             this.button13.TabIndex = 31;
@@ -945,23 +959,34 @@
             this.onlySetEquip.Text = "セット装備に限定する";
             this.onlySetEquip.UseVisualStyleBackColor = true;
             // 
-            // ocrRadioAzure
+            // checkBox1
             // 
-            this.ocrRadioAzure.AutoSize = true;
-            this.ocrRadioAzure.Location = new System.Drawing.Point(3, 91);
-            this.ocrRadioAzure.Name = "ocrRadioAzure";
-            this.ocrRadioAzure.Size = new System.Drawing.Size(52, 16);
-            this.ocrRadioAzure.TabIndex = 3;
-            this.ocrRadioAzure.TabStop = true;
-            this.ocrRadioAzure.Text = "Azure";
-            this.ocrRadioAzure.UseVisualStyleBackColor = true;
-            this.ocrRadioAzure.CheckedChanged += new System.EventHandler(this.ocrRadio_CheckedChanged);
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(493, 65);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(88, 16);
+            this.checkBox1.TabIndex = 62;
+            this.checkBox1.Text = "精度を上げる";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(877, 31);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(119, 23);
+            this.button19.TabIndex = 63;
+            this.button19.Text = "装備データメンテナンス";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1199, 773);
+            this.Controls.Add(this.button19);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.onlySetEquip);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button16);
@@ -1137,6 +1162,8 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.CheckBox onlySetEquip;
         private System.Windows.Forms.RadioButton ocrRadioAzure;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button19;
     }
 }
 
