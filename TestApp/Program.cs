@@ -9,7 +9,7 @@ namespace TestApp {
     class Program {
         [STAThread]
         static void Main(string[] args) {
-
+            /*
             // OCRを行うオブジェクトの生成
             //  言語データの場所と言語名を引数で指定する
             var tesseract = new TesseractEngine(
@@ -24,14 +24,17 @@ namespace TestApp {
             var ttt = page.GetText();
 
 
-
+            */
 
 
             OcrClassLibrary.OcrClassLibrary lib = new OcrClassLibrary.OcrClassLibrary();
 
             //string text = lib.OcrFromClipBoard("ja-JP");
 
-            string text = lib.OcrFromImage(@"C:\Tools\test.png", "ja-JP");
+            //string text = lib.OcrFromImage(@"C:\Tools\test.png", "ja-JP");
+            lib.CameraStart(0);
+            string text = lib.OcrFromCamera("en-US");
+            lib.CameraEnd();
         }
     }
 }

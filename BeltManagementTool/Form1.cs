@@ -1036,6 +1036,8 @@ O装備できる仲間モンスターを見る
         }
 
         private void button14_Click(object sender, EventArgs e) {
+            resultList.Items.Clear();
+
             string job = jobList.SelectedItem.ToString();
             string user = listBox1.SelectedItem.ToString();
 
@@ -1111,7 +1113,7 @@ O装備できる仲間モンスターを見る
                 item["効果"] = parts[2];
                 string[] ability = parts[2].Split(new char[] { ' ' });
                 for(int j = 0; j < ability.Length; j++) {
-                    if(ability[j].Contains("ガード")) {
+                    if(ability[j].Contains("ガード") && !ability[j].Contains("盾ガード率")) {
                         string kind = ability[j].Substring(ability[j].IndexOf(":") + 1, (ability[j].IndexOf("ガード") + 3) - (ability[j].IndexOf(":") + 1));
                         string grade = ability[j].Substring(ability[j].IndexOf("+") + 1, ability[j].Length - 1 - (ability[j].IndexOf("+") + 1)); // %を除外する
                         float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
@@ -1120,7 +1122,7 @@ O装備できる仲間モンスターを見る
                         }
                         item[kind] = (float.Parse(item[kind]) + nGrade).ToString();
                     }
-                    else if (ability[j].Contains("減")) {
+                    else if (ability[j].Contains("減") && !ability[j].Contains("軽減")) {
                         string kind = ability[j].Substring(ability[j].IndexOf(":") + 1, (ability[j].IndexOf("ダメージ") + 4) - (ability[j].IndexOf(":") + 1));
                         string grade = ability[j].Substring(ability[j].IndexOf("ダメージ") + 4, ability[j].Length - 2 - (ability[j].IndexOf("ダメージ") + 4)); // %減を除外する
                         float nGrade = Calc.Analyze(grade.Replace("(", "").Replace(")", "")).Calc(null);
@@ -1133,8 +1135,9 @@ O装備できる仲間モンスターを見る
                 haveEquipList.Add(item);
             }
 
-
+            // 選択された職のセット装備
             List<Dictionary<string, string>> setEquips = itemDictionary.Where(x => x.ContainsKey("セット効果")).Where(x => x["装備職"].Contains(job)).OrderByDescending(x => int.Parse(x["LV"])).ToList();
+            // 選択された職のすべての装備
             List<Dictionary<string, string>> allEquips = itemDictionary.Where(x => !x.ContainsKey("セット効果")).Where(x => (!x.ContainsKey("装備職") ||  (x.ContainsKey("装備職") && x["装備職"].Contains(job))) && registParts.Contains(x["分類"])).OrderBy(x => int.Parse(x.ContainsKey("LV") ? x["LV"] : "1")).ToList();
 
             if(onlySetEquip.Checked) {
@@ -1142,6 +1145,7 @@ O装備できる仲間モンスターを見る
                 for (int i = 0; i < setEquips.Count; i++) {
                     Dictionary<string, string> setEquip = new Dictionary<string, string>(setEquips[i]);
 
+                    // 今回のセット装備の耐性を計算する
                     string[] setAbility = setEquip["セット特殊効果"].Replace("、", ",").Split(new char[] { ',' });
                     for (int j = 0; j < setAbility.Length; j++) {
                         string[] abilityList = setAbility[j].Split(new char[] { '|' });
@@ -1167,6 +1171,7 @@ O装備できる仲間モンスターを見る
                         }
                     }
 
+                    // セット装備に含まれるパーツ
                     Dictionary<string, int> partsCheckList = new Dictionary<string, int>();
                     for (int j = 0; j < bodyParts.Length; j++) {
                         partsCheckList[bodyParts[j]] = 0;
@@ -1223,6 +1228,7 @@ O装備できる仲間モンスターを見る
             List<List<Dictionary<string, string>>> allCheckEquipList = new List<List<Dictionary<string, string>>>();
             // 手持ちの装備がそろった
 
+            // すべての組み合わせを取得する
             checkEquipList(haveSetList, bodyParts.ToList(), null, 0, ref allCheckEquipList);
 
 
@@ -1295,7 +1301,6 @@ O装備できる仲間モンスターを見る
                     sb.Append(Environment.NewLine);
                 }
             }
-            resultList.Items.Clear();
             resultList.Items.AddRange(sb.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
         }
 
@@ -1498,7 +1503,7 @@ O装備できる仲間モンスターを見る
                     string[] ability = abilitys[i];
                     for (int j = 0; j < ability.Length; j++) {
                         string[] abilityParts = ability[j].Split(new char[] { ':' });
-                        if (abilityParts.Length > 1 && abilityParts[0] != "基礎" && !allAbility.Contains(abilityParts[abilityParts.Length - 1])) {
+                        if (abilityParts.Length > 1 /*&& abilityParts[0] != "基礎"*/ && !allAbility.Contains(abilityParts[abilityParts.Length - 1])) {
                             List<string> aa = getNearlyString(ability[j], allAbility);
                             abilityOk = false;
                         }
